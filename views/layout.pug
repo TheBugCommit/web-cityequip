@@ -46,6 +46,15 @@ html
                     i.fa.fa-sign-in(style="padding-right:5px")
                     |Login
 
+    .container.mt-3
+      if messages.error
+        each msg in messages.error
+          .alert.alert-danger(role='alert')= msg
+
+      if messages.success
+        each msg in messages.success
+          .alert.alert-success(role='alert')= msg
+
     .content
       block content
 

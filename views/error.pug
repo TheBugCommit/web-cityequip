@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  .container.mt-5.text-center
+    h1.display-1.text-danger #{status}
+    h2.mt-3.text-secondary #{message}
+    p.mt-4.text-muted
+      | Ha ocurrido un error mientras procesábamos tu solicitud.
+    a.btn.btn-primary.mt-4(href="/") Volver al inicio
