@@ -3,6 +3,7 @@ import express from 'express'
 import router from './routes/router.js'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { getMenuForRole } from './config/menu.config.js'
 
 dotenv.config()
 
@@ -18,6 +19,12 @@ app.set('view engine', 'pug');
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+
+app.use((req, res, next) => {
+  res.locals.menu = getMenuForRole('user');
+  res.locals.currentPath = req.path;
+  next()
+})
 
 app.use('/', router)
 
