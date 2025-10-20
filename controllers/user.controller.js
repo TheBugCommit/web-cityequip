@@ -1,3 +1,5 @@
+import userService from "../service/user.service.js"
+
 const registerForm = (req, res) => {
     res.render('auth/register', { title: 'Register' })
 }
@@ -13,8 +15,10 @@ const registerUser = async (req, res, next) => {
                 messages: req.session.messages
             })
         }
-        //await userService.registerUser(req.body.name, req.body.email, req.body.password)
-        res.redirect('index')
+        
+        await userService.registerUser(req.body.name, req.body.email, req.body.password)
+        
+        next()
     } catch (err) {
         next(err)
     }

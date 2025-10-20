@@ -8,6 +8,8 @@ import router from './routes/router.js'
 import middlewares from './middlewares/index.js'
 import { getMenuForRole } from './config/menu.config.js'
 import { flash } from './helpers/flash.helper.js'
+import initPassport from './service/passport.service.js'
+import passport from 'passport'
 
 dotenv.config()
 
@@ -34,14 +36,15 @@ app.use(session({
   })
 }))
 
+initPassport()
+app.use(passport.initialize())
+app.use(passport.session())
+
 app.use((req, res, next) => {
   const role = req.user?.role || 'guest'
   res.locals.menu = getMenuForRole(role)
   res.locals.currentPath = req.path
-  next()
-})
-
-app.use((req, res, next) => {
+  res.locals.user = req.user || null;
   res.locals.messages = req.session.messages || {}
   req.session.messages = {}
   next()
