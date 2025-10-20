@@ -3,6 +3,7 @@ import userValidator from './validators/user.validator.js'
 import validationErrorHandler from './validationErrorHandler.middleware.js'
 import registerValidator from './validators/register.validator.js'
 import errorHandler from './error.middleware.js'
+import loginValidator from './validators/login.validator.js'
 
 const middlewares = {
     errorHandler: errorHandler,
@@ -11,6 +12,7 @@ const middlewares = {
         idValidator: idValidator,
         userValidator: userValidator,
         registerValidator: registerValidator,
+        loginValidator: loginValidator,
     }
 }
 

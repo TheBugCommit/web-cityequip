@@ -1,5 +1,6 @@
 import passportLocalMongoose from 'passport-local-mongoose'
 import mongoose from 'mongoose'
+import ROLES from '../config/roles.config.js'
 
 mongoose.Promise = global.Promise
 
@@ -15,6 +16,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: 'Please provide a nc = mongoose.mame',
         trim: true
+    },
+    role: { 
+        type: String, 
+        enum: [ROLES.USER, ROLES.ADMIN], 
+        default: 'user' 
     },
     resetPasswordToken: String,
     resetPasswordExpires: Date,
