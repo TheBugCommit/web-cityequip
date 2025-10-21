@@ -2,7 +2,7 @@ import passport from "passport"
 
 const login = (req, res, next) => {
     if (req.validationErrors) {
-        req.flash('error', 'Some fields are incorrect')
+        req.flash('warning', 'Some fields are incorrect')
         return res.render('auth/login', {
             title: 'Login',
             body: req.body,

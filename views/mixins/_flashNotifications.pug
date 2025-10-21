@@ -1,0 +1,32 @@
+mixin flashNotifications(messages)    
+    if messages && messages['success']
+      each msg in messages['success']
+        .flash-notification.toast.flash-success
+          .toast-header.bg-success.text-bg-success
+            strong.me-auto Success
+            button.btn-close.btn-close-white(type="button" data-bs-dismiss="toast" aria-label="Close")
+          .toast-body= msg
+    
+    if messages && messages['error']
+      each msg in messages['error']
+        .flash-notification.toast.flash-error
+          .toast-header.bg-danger.text-bg-danger
+            strong.me-auto Error
+            button.btn-close.btn-close-white(type="button" data-bs-dismiss="toast" aria-label="Close")
+          .toast-body= msg
+    
+    if messages && messages['info']
+      each msg in messages['info']
+        .flash-notification.toast.flash-info
+          .toast-header.bg-info.text-bg-info
+            strong.me-auto Information
+            button.btn-close.btn-close-white(type="button" data-bs-dismiss="toast" aria-label="Close")
+          .toast-body= msg
+    
+    if messages && messages['warning']
+      each msg in messages['warning']
+        .flash-notification.toast.flash-warning
+          .toast-header.bg-warning.text-bg-warning
+            strong.me-auto Warning
+            button.btn-close(type="button" data-bs-dismiss="toast" aria-label="Close")
+          .toast-body= msg

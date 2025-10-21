@@ -1,4 +1,7 @@
-import { content } from './modules/test.js';
+import { FlashNotifications } from './modules/flash_notifications.js';
 
-console.log('It works!');
-console.log(content);
+document.addEventListener('DOMContentLoaded', main)
+
+function main() {
+    const flashNotifications = new FlashNotifications()
+}
