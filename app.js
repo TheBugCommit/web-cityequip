@@ -52,8 +52,12 @@ app.use((req, res, next) => {
 
 app.use(flash)
 
-app.use('/', router.equipment)
+app.use('/', router.home)
 app.use('/auth', router.auth)
+app.use('/equipments', router.equipment)
+app.use('/user', router.user)
+app.use('/admin', router.admin)
+
 app.use(middlewares.errorHandler)
 
 export default app
