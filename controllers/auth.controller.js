@@ -1,4 +1,25 @@
 import passport from "passport"
+import userService from "../service/user.service.js"
+
+const register = async (req, res, next) => {
+    try {
+        if (req.validationErrors) {
+            req.flash('error', 'Hi han camps que no son correctes')
+            return res.render('auth/register', {
+                title: 'Register',
+                body: req.body,
+                errors: req.validationErrors,
+                messages: req.session.messages
+            })
+        }
+        
+        await userService.registerUser(req.body.name, req.body.email, req.body.password)
+        
+        next()
+    } catch (err) {
+        next(err)
+    }
+}
 
 const login = (req, res, next) => {
     if (req.validationErrors) {
@@ -49,10 +70,16 @@ const loginForm = (req, res, next) => {
     res.render('auth/login', { title: 'Login' })
 }
 
+const registerForm = (req, res) => {
+    res.render('auth/register', { title: 'Register' })
+}
+
 const authController = {
     login,
+    register,
     logout,
-    loginForm
+    loginForm,
+    registerForm
 }
 
 export default authController

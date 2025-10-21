@@ -15,8 +15,6 @@ export class FlashNotifications {
     this.notifications = Array.from(notifications)
 
     if (this.notifications.length > 0) {
-      console.log('🔍 Notificaciones encontradas:', this.notifications.length)
-      
       this.notifications.forEach((notification, index) => {
         this.prepareNotification(notification)
         

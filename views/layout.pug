@@ -33,16 +33,16 @@ html
                     i.fa.fa-user-circle(style="padding-right:5px")
                     span #{user.name}
                 li.nav-item
-                  a.nav-link(href='/logout')
+                  a.nav-link(href='/auth/logout')
                     i.fa.fa-sign-out(style="padding-right:5px")
                     |Log Out
               else
                 li.nav-item
-                  a.nav-link(href='/register')
+                  a.nav-link(href='/auth/register')
                     i.fa.fa-user(style="padding-right:5px")
                     |Sign Up
                 li.nav-item
-                  a.nav-link(href='/login')
+                  a.nav-link(href='/auth/login')
                     i.fa.fa-sign-in(style="padding-right:5px")
                     |Login
 

@@ -4,7 +4,7 @@ import express from 'express'
 import { fileURLToPath } from 'url'
 import session from 'express-session'
 import MongoStore from 'connect-mongo'
-import router from './routes/router.js'
+import router from './routes/index.js'
 import middlewares from './middlewares/index.js'
 import { getMenuForRole } from './config/menu.config.js'
 import { flash } from './helpers/flash.helper.js'
@@ -52,7 +52,8 @@ app.use((req, res, next) => {
 
 app.use(flash)
 
-app.use('/', router)
+app.use('/', router.equipment)
+app.use('/auth', router.auth)
 app.use(middlewares.errorHandler)
 
 export default app
