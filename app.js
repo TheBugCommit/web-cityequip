@@ -54,9 +54,8 @@ app.use(flash)
 
 app.use('/', router.home)
 app.use('/auth', router.auth)
-app.use('/equipments', router.equipment)
+app.use('/equipment', router.equipment)
 app.use('/user', router.user)
-app.use('/admin', router.admin)
 
 app.use(middlewares.errorHandler)
 

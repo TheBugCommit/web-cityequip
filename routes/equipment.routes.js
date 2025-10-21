@@ -1,20 +1,43 @@
 import { Router } from "express"
 import middlewares from "../middlewares/index.js"
+import equipmentController from "../controllers/equipment.controller.js"
+import ROLES from "../config/roles.config.js"
 
 const router = Router()
 
-router.get('/type/:type', (req, res) => { res.json({content: 'Filter equipment by type'})})
-router.get('/:uuid', (req, res) => {res.json({content: 'Detailed equipment uuid'})})   
-router.get('/map', (req, res) => { res.json({content: 'Render global map view'})})
-router.get('/ranking/global', (req, res) => { res.json({content: 'Global equipments puntuation ranking'})})
-router.post('/:uuid/reviews', 
+router.get('/type/:type', equipmentController.equipmentsByType)
+router.get('/:uuid', equipmentController.showEquipment)   
+router.get('/map', equipmentController.showEquipmentsMap)
+router.get('/ranking/global', equipmentController.showGlobalRanking)
+router.post('/:uuid/review/new', 
     middlewares.auth.isAuthenticated, 
-    (req, res) => { res.json({content: 'Create review'})}
+    equipmentController.createReview
 )
-router.put('/:uuid/reviews/:reviewId', 
+router.put('/:uuid/review/:reviewId', 
     middlewares.auth.isAuthenticated, 
-    (req, res) => { res.json({content: 'Create review'})}
+    equipmentController.updateReview
 )
 
+// CRUD
+router.get('/new', 
+    middlewares.auth.hasRole([ROLES.ADMIN]), 
+    equipmentController.equipmentCreateForm
+)
+router.get('/:uuid', 
+    middlewares.auth.hasRole([ROLES.ADMIN]),
+    equipmentController.equipmentUpdateForm
+)
+router.post('/', 
+    middlewares.auth.hasRole([ROLES.ADMIN]),
+    equipmentController.createEquipment
+)
+router.put('/:uuid', 
+    middlewares.auth.hasRole([ROLES.ADMIN]),
+    equipmentController.updateEquipment
+)
+router.delete('/:uuid', 
+    middlewares.auth.hasRole([ROLES.ADMIN]),
+    equipmentController.deleteEquipment
+)
 
 export default router
