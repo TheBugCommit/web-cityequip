@@ -21,6 +21,7 @@
     "dev": "concurrently \"npm run watch\" \"npm run webpack\""
   },
   "dependencies": {
+    "axios": "^1.13.0",
     "connect-mongo": "^5.1.0",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",

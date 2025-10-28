@@ -1,5 +1,5 @@
 import path from 'path'
-import dotenv from 'dotenv'
+import 'dotenv/config';
 import express from 'express'
 import { fileURLToPath } from 'url'
 import session from 'express-session'
@@ -10,8 +10,6 @@ import { getMenuForRole } from './config/menu.config.js'
 import { flash } from './helpers/flash.helper.js'
 import initPassport from './service/passport.service.js'
 import passport from 'passport'
-
-dotenv.config()
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
