@@ -4,6 +4,7 @@ const apiInstance = axios.create({
   baseURL: process.env.API_URL,
   timeout: 10000,
   headers: {
+    'Origin': `${process.env.HOST}:${process.env.PORT}`,
     'x-api-key': process.env.API_KEY
   }
 })
