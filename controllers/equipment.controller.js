@@ -1,3 +1,5 @@
+import reviewService from "../service/review.service.js"
+
 const home = (req, res) => { 
     res.render('index')
 }
@@ -38,12 +40,38 @@ const showGlobalRanking = (req, res) => {
     res.json({content: 'Global equipments puntuation ranking'})
 }
 
-const createReview = (req, res) => {
-    res.json({content: 'Create review'})
+const createReview = async (req, res) => {
+    try {
+        const review = await reviewService.createReview({
+            userId: req.user._id,
+            equipmentUuid: req.params.uuid,
+            rating: req.body.rating,
+            comment: req.body.comment
+        })
+
+        req.flash('success', `Review created`)
+    } catch (err) {
+        req.flash('error', err.message)
+    }
+
+    return res.redirect(req.header('Referer') || '/')
 }
 
-const updateReview = (req, res) => {
-    res.json({content: 'Update review'})
+const updateReview = async (req, res) => {
+    try {
+        const updatedReview = await reviewService.updateReview({
+            reviewId: req.params.reviewId,
+            userId: req.user._id,
+            equipmentUuid: req.params.uuid,
+            rating: req.body.rating,
+            comment: req.body.comment
+        })
+        req.flash('success', `Review updated`)
+    } catch (err) {
+        req.flash('error', err.message)
+    }
+
+    return res.redirect(req.header('Referer') || '/')
 }
 
 const equipmentController = {

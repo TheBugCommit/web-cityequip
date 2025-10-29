@@ -55,6 +55,12 @@ app.use('/auth', router.auth)
 app.use('/equipment', router.equipment)
 app.use('/user', router.user)
 
+app.use((req, res, next) => {
+    const err = new Error('Page not found');
+    err.status = 404;
+    next(err);
+});
+
 app.use(middlewares.errorHandler)
 
 export default app

@@ -30,7 +30,8 @@
     "mongoose": "^8.19.1",
     "passport": "^0.7.0",
     "passport-local-mongoose": "^8.0.0",
-    "pug": "^3.0.3"
+    "pug": "^3.0.3",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@types/node": "^24.9.0",

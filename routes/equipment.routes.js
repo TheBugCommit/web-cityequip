@@ -13,7 +13,7 @@ router.post('/:uuid/review/new',
     middlewares.auth.isAuthenticated, 
     equipmentController.createReview
 )
-router.put('/:uuid/review/:reviewId', 
+router.post('/:uuid/review/:reviewId', 
     middlewares.auth.isAuthenticated, 
     equipmentController.updateReview
 )
@@ -27,15 +27,15 @@ router.get('/:uuid',
     middlewares.auth.hasRole([ROLES.ADMIN]),
     equipmentController.equipmentUpdateForm
 )
-router.post('/', 
+router.post('/new', 
     middlewares.auth.hasRole([ROLES.ADMIN]),
     equipmentController.createEquipment
 )
-router.put('/:uuid', 
+router.post('/update/:uuid', 
     middlewares.auth.hasRole([ROLES.ADMIN]),
     equipmentController.updateEquipment
 )
-router.delete('/:uuid', 
+router.delete('/delete/:uuid', 
     middlewares.auth.hasRole([ROLES.ADMIN]),
     equipmentController.deleteEquipment
 )

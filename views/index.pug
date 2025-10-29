@@ -2,3 +2,40 @@ extends layout
 
 block content
     p Extending a layout
+
+    form(method='POST', action=`/equipment/45842b7c-290c-4395-8407-8ee2acc116d3/review/new`)
+        h2 Dejar una Reseña
+        .form-group
+            label(for='rating') Puntuación (1-5):
+            select#rating(name='rating', required)
+                option(value='') Selecciona una puntuación
+                option(value='5') 5 estrellas (Excelente)
+                option(value='4') 4 estrellas (Muy bueno)
+                option(value='3') 3 estrellas (Normal)
+                option(value='2') 2 estrellas (Malo)
+                option(value='1') 1 estrella (Terrible)
+
+        .form-group
+            label(for='comment') Comentario:
+            textarea#comment(name='comment', rows='4', placeholder='Escribe tu opinión aquí...')
+
+        button(type='submit', class='btn btn-primary') Enviar Reseña
+
+
+    form(method='POST', action=`/equipment/45842b7c-290c-4395-8407-8ee2acc116d3/review/e7354168-b7c5-4b84-820d-f3ba46cdbde7`)
+        h2 Update Reseña
+        .form-group
+            label(for='rating') Puntuación (1-5):
+            select#rating(name='rating', required)
+                option(value='') Selecciona una puntuación
+                option(value='5') 5 estrellas (Excelente)
+                option(value='4') 4 estrellas (Muy bueno)
+                option(value='3') 3 estrellas (Normal)
+                option(value='2') 2 estrellas (Malo)
+                option(value='1') 1 estrella (Terrible)
+
+        .form-group
+            label(for='comment') Comentario:
+            textarea#comment(name='comment', rows='4', placeholder='Escribe tu opinión aquí...')
+
+        button(type='submit', class='btn btn-primary') Modificar Reseña

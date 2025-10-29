@@ -1,6 +1,11 @@
 import mongoose from 'mongoose'
 
 const reviewSchema = new mongoose.Schema({
+  uuid: { 
+    type: String, 
+    required: true, 
+    unique: true 
+  },
   equipmentUuid: {
     type: String,
     required: true,
@@ -26,7 +31,6 @@ const reviewSchema = new mongoose.Schema({
   timestamps: true
 })
 
-// Evitar que un mismo usuario puntúe el mismo producto más de una vez
 reviewSchema.index({ equipmentUuid: 1, user: 1 }, { unique: true })
 
 const Review = mongoose.model('Review', reviewSchema)

@@ -1,4 +1,8 @@
+import reviewService from "../service/review.service.js"
+
 const showEquipmentsReviewed = (req, res) => {
+    //const reviews = reviewService.getUserReviews(req.user._id)
+    //res.render('path de la vista')  #TODO: Vista
     res.json({ message: 'show my reviews' })
 }
 
