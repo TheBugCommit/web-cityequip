@@ -3,18 +3,7 @@ import userService from "../service/user.service.js"
 
 const register = async (req, res, next) => {
     try {
-        if (req.validationErrors) {
-            req.flash('error', 'Hi han camps que no son correctes')
-            return res.render('auth/register', {
-                title: 'Register',
-                body: req.body,
-                errors: req.validationErrors,
-                messages: req.session.messages
-            })
-        }
-        
         await userService.registerUser(req.body.name, req.body.email, req.body.password)
-        
         next()
     } catch (err) {
         next(err)
@@ -22,16 +11,6 @@ const register = async (req, res, next) => {
 }
 
 const login = (req, res, next) => {
-    if (req.validationErrors) {
-        req.flash('warning', 'Some fields are incorrect')
-        return res.render('auth/login', {
-            title: 'Login',
-            body: req.body,
-            errors: req.validationErrors,
-            messages: req.session.messages
-        })
-    }
-
     passport.authenticate('local', (err, user, info) => {
         if (err)
             return next(err)

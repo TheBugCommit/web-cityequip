@@ -6,6 +6,7 @@ import errorHandler from './error.middleware.js'
 import loginValidator from './validators/login.validator.js'
 import isAuthenticated from './auth/auth.middleware.js'
 import hasRole from './auth/role.middleware.js'
+import reviewValidator from './validators/review.validator.js'
 
 const middlewares = {
     errorHandler: errorHandler,
@@ -19,6 +20,7 @@ const middlewares = {
         userValidator: userValidator,
         registerValidator: registerValidator,
         loginValidator: loginValidator,
+        reviewValidator: reviewValidator
     }
 }
 

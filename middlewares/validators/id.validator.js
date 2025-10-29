@@ -1,8 +1,18 @@
 import { param } from 'express-validator'
 
-const mongoIdValidator = [
-  param('id')
-    .isUUID(4).withMessage('ID must be a valid UUID'),
+const equipmentIdValidator = [
+  param('uuid')
+    .isUUID(4).withMessage('UUID param must be a valid UUID'),
 ]
 
-export default mongoIdValidator
+const reviewIdValidator = [
+  param('reviewId')
+    .isUUID(4).withMessage('reviewId param must be a valid UUID'),
+]
+
+const idValidator = {
+  equipmentIdValidator,
+  reviewIdValidator
+}
+
+export default idValidator

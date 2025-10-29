@@ -6,15 +6,26 @@ import ROLES from "../config/roles.config.js"
 const router = Router()
 
 router.get('/type/:type', equipmentController.equipmentsByType)
-router.get('/:uuid', equipmentController.showEquipment)   
+router.get('/:uuid', 
+    middlewares.reqValidators.idValidator.equipmentIdValidator,
+    middlewares.validationErrorHandler,
+    equipmentController.showEquipment
+)   
 router.get('/map', equipmentController.showEquipmentsMap)
 router.get('/ranking/global', equipmentController.showGlobalRanking)
 router.post('/:uuid/review/new', 
-    middlewares.auth.isAuthenticated, 
+    middlewares.auth.isAuthenticated,
+    middlewares.reqValidators.idValidator.equipmentIdValidator,
+    middlewares.reqValidators.reviewValidator,
+    middlewares.validationErrorHandler,
     equipmentController.createReview
 )
 router.post('/:uuid/review/:reviewId', 
-    middlewares.auth.isAuthenticated, 
+    middlewares.auth.isAuthenticated,
+    middlewares.reqValidators.idValidator.equipmentIdValidator,
+    middlewares.reqValidators.idValidator.reviewIdValidator,
+    middlewares.reqValidators.reviewValidator,
+    middlewares.validationErrorHandler,
     equipmentController.updateReview
 )
 
@@ -25,6 +36,8 @@ router.get('/new',
 )
 router.get('/:uuid', 
     middlewares.auth.hasRole([ROLES.ADMIN]),
+    middlewares.reqValidators.idValidator.equipmentIdValidator,
+    middlewares.validationErrorHandler,
     equipmentController.equipmentUpdateForm
 )
 router.post('/new', 
@@ -33,10 +46,14 @@ router.post('/new',
 )
 router.post('/update/:uuid', 
     middlewares.auth.hasRole([ROLES.ADMIN]),
+    middlewares.reqValidators.idValidator.equipmentIdValidator,
+    middlewares.validationErrorHandler,
     equipmentController.updateEquipment
 )
-router.delete('/delete/:uuid', 
+router.post('/delete/:uuid', 
     middlewares.auth.hasRole([ROLES.ADMIN]),
+    middlewares.reqValidators.idValidator.equipmentIdValidator,
+    middlewares.validationErrorHandler,
     equipmentController.deleteEquipment
 )
 
