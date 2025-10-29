@@ -15,6 +15,8 @@ apiInstance.interceptors.response.use(
     let err;
     if (error.response) {
       err = new Error(error.response.data.message || 'Error in server response');
+      if(error.response.data.errors)
+        err.errors = error.response.data.errors
     } else if (error.request) {
       err = new Error('Can\'t connect to server.');
     } else {

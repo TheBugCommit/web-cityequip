@@ -39,3 +39,43 @@ block content
             textarea#comment(name='comment', rows='4', placeholder='Escribe tu opinión aquí...')
 
         button(type='submit', class='btn btn-primary') Modificar Reseña
+
+    form(method="POST" action="/equipment/update/d246e910-b393-417f-b510-2078afa661a9")
+        div.form-group
+            label(for="nom") Nom *
+            input#nom.form-control(type="text", name="nom", required)
+        div.form-group
+            label(for="horari") Horari
+            input#horari.form-control(type="text", name="horari")
+        div.form-group
+            label(for="tipus") Tipus
+            input#tipus.form-control(type="text", name="tipus")
+        div.form-group
+            label(for="municipal") Municipal
+            select#municipal.form-control(name="municipal")
+                option(value="") Selecciona
+                option(value="si") Sí
+                option(value="no") No
+        div.form-group
+            label(for="latitud") Latitud
+            input#latitud.form-control(type="number", step="0.000001", min="-90", max="90", name="latitud")
+        div.form-group
+            label(for="longitud") Longitud
+            input#longitud.form-control(type="number", step="0.000001", min="-180", max="180", name="longitud")
+        div.form-group
+            label(for="localitzacio") Localització
+            input#localitzacio.form-control(type="text", name="localitzacio")
+        div.form-group
+            label(for="telefon") Telèfon
+            input#telefon.form-control(type="text", pattern="\\d{9}", name="telefon")
+        div.form-group
+            label(for="districte") Districte
+            input#districte.form-control(type="text", name="districte")
+        div.form-group
+            label(for="codi_ens") Codi ENS
+            input#codi_ens.form-control(type="text", pattern="\\d{10}", name="codi_ens")
+        div.form-group
+            label(for="nom_ens") Nom ENS *
+            input#nom_ens.form-control(type="text", name="nom_ens", required)
+        div.form-group
+            button.btn.btn-primary(type="submit") Guardar

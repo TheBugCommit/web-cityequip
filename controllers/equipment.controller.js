@@ -1,16 +1,32 @@
 import equipmentService from "../service/equipment.service.js"
 import reviewService from "../service/review.service.js"
 
-const home = (req, res) => { 
+const home = (req, res) => {
     res.render('index')
 }
 
-const createEquipment = (req, res) => {
-    res.json({ content: 'Create Equipment' })
+const createEquipment = async (req, res) => {
+    try {
+        const equipment = await equipmentService.createEquipment(req.body)
+        req.flash('success', 'Equipment created')
+    } catch (err) {
+        req.flash('error', err.message)
+        if(err.errors && Array.isArray(err.errors)) 
+            err.errors.forEach(error => req.flash('warning', error.message))
+    }
+    return res.redirectBack()
 }
 
-const updateEquipment = (req, res) => {
-    res.json({ content: 'Update Equipment' })
+const updateEquipment = async (req, res) => {
+    try {
+        const equipment = await equipmentService.updateEquipment(req.params.uuid, req.body)
+        req.flash('success', 'Equipment updated')
+    } catch (err) {
+        req.flash('error', err.message)
+        if(err.errors && Array.isArray(err.errors)) 
+            err.errors.forEach(error => req.flash('warning', error.message))
+    }
+    return res.redirectBack()
 }
 
 const deleteEquipment = async (req, res) => {
@@ -32,19 +48,19 @@ const equipmentUpdateForm = (req, res) => {
 }
 
 const equipmentsByType = (req, res) => {
-    res.json({content: 'Filter equipment by type'})
-} 
+    res.json({ content: 'Filter equipment by type' })
+}
 
 const showEquipment = (req, res) => {
-    res.json({content: 'Render Detailed equipment uuid'})
-} 
+    res.json({ content: 'Render Detailed equipment uuid' })
+}
 
 const showEquipmentsMap = (req, res) => {
-    res.json({content: 'Render global map view'})
-} 
+    res.json({ content: 'Render global map view' })
+}
 
 const showGlobalRanking = (req, res) => {
-    res.json({content: 'Global equipments puntuation ranking'})
+    res.json({ content: 'Global equipments puntuation ranking' })
 }
 
 const createReview = async (req, res) => {
