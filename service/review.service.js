@@ -55,37 +55,53 @@ const deleteReviewByEquipment = async (equipmentUuid) => {
 }
 
 const getUserReviews = async (userId) => {
-    return Review.find({ user: userId })
-        .select('equipmentUuid rating comment updatedAt')
-        .sort('-updatedAt')
+    try {
+        return await Review.find({ user: userId })
+            .select('equipmentUuid rating comment updatedAt')
+            .sort('-updatedAt')
+    } catch (err) {
+        throw handleMongooseError(err, 'Error deleting many reviews')
+    }
 }
 
 const getGlobalRanking = async (limit = 3) => {
-    return Review.aggregate([
-        {
-            $group: {
-                _id: '$equipmentUuid',
-                avgRating: { $avg: '$rating' },
-                reviewsCount: { $sum: 1 }
-            }
-        },
-        { $sort: { avgRating: -1, reviewsCount: -1 } },
-        { $limit: limit }
-    ])
+    try {
+        return await Review.aggregate([
+            {
+                $group: {
+                    _id: '$equipmentUuid',
+                    avgRating: { $avg: '$rating' },
+                    reviewsCount: { $sum: 1 }
+                }
+            },
+            { $sort: { avgRating: -1, reviewsCount: -1 } },
+            { $limit: limit }
+        ])
+    } catch (err) {
+        throw handleMongooseError(err, 'Error deleting many reviews')
+    }
 }
 
 const getPersonalRanking = async (userId, limit = 3) => {
-    return Review.find({ user: userId })
-        .select('equipmentUuid rating comment updatedAt')
-        .sort({ rating: -1, updatedAt: -1 })
-        .limit(limit)
+    try {
+        return await Review.find({ user: userId })
+            .select('equipmentUuid rating comment updatedAt')
+            .sort({ rating: -1, updatedAt: -1 })
+            .limit(limit)
+    } catch (err) {
+        throw handleMongooseError(err, 'Error deleting many reviews')
+    }
 }
 
 const getReviewsByEquipment = async (equipmentUuid) => {
-    return Review.find({ equipmentUuid })
-        .populate('user', 'name email')
-        .select('rating comment createdAt updatedAt')
-        .sort({ createdAt: -1 })
+    try {
+        return await Review.find({ equipmentUuid })
+            .populate('user', 'name email')
+            .select('rating comment createdAt updatedAt')
+            .sort({ createdAt: -1 })
+    } catch (err) {
+        throw handleMongooseError(err, 'Error deleting many reviews')
+    }
 }
 
 const reviewService = {
