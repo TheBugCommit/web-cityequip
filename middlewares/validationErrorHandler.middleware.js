@@ -8,7 +8,7 @@ const handleValidationErrors = (req, res, next) => {
       req.flash('warning', `${detail.msg}`)
     })
 
-    return res.redirect(req.header('Referer') || '/')
+    return res.redirectBack()
   }
   next()
 }

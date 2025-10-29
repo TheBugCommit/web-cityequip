@@ -17,7 +17,7 @@ const login = (req, res, next) => {
 
         if (!user) {
             req.flash('error', info?.message || 'Failed login')
-            return res.redirect('/auth/login')
+            return res.redirectBack('/auth/login')
         }
 
         req.login(user, (err) => {
