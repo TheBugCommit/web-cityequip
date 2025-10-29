@@ -45,10 +45,10 @@ const updateReview = async ({ reviewId, userId, equipmentUuid, rating, comment }
     }
 }
 
-const deleteReviewByEquipment = async (equipmentUuid) => {
+const deleteReviewsByEquipment = async (equipmentUuid, session) => {
     try {
         if (equipmentUuid == null) throw createError("No ID passed", 400)
-        await Review.deleteMany({ equipmentUuid: equipmentUuid })
+        await Review.deleteMany({ equipmentUuid: equipmentUuid }, { session })
     } catch (err) {
         throw handleMongooseError(err, 'Error deleting many reviews')
     }
@@ -111,7 +111,7 @@ const reviewService = {
     getGlobalRanking,
     getPersonalRanking,
     getReviewsByEquipment,
-    deleteReviewByEquipment,
+    deleteReviewsByEquipment,
 }
 
 export default reviewService

@@ -7,7 +7,7 @@ const hasRole = (...allowedRoles) => {
 
     if (!allowedRoles.includes(req.user.role)) {
       req.flash('warning', 'You do not have permissions for this section')
-      return res.status(403).redirect('/')
+      return res.redirectBack()
     }
 
     next()

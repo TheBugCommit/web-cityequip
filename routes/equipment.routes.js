@@ -31,30 +31,30 @@ router.post('/:uuid/review/:reviewId',
 
 // CRUD
 router.get('/new', 
-    middlewares.auth.hasRole([ROLES.ADMIN]), 
+    middlewares.auth.hasRole(ROLES.ADMIN), 
     equipmentController.equipmentCreateForm
 )
 router.get('/:uuid', 
-    middlewares.auth.hasRole([ROLES.ADMIN]),
+    middlewares.auth.hasRole(ROLES.ADMIN),
     middlewares.reqValidators.idValidator.equipmentIdValidator,
     middlewares.validationErrorHandler,
     equipmentController.equipmentUpdateForm
 )
 router.post('/new', 
-    middlewares.auth.hasRole([ROLES.ADMIN]),
+    middlewares.auth.hasRole(ROLES.ADMIN),
     middlewares.reqValidators.equipmentValidator,
     middlewares.validationErrorHandler,
     equipmentController.createEquipment
 )
 router.post('/update/:uuid', 
-    middlewares.auth.hasRole([ROLES.ADMIN]),
+    middlewares.auth.hasRole(ROLES.ADMIN),
     middlewares.reqValidators.idValidator.equipmentIdValidator,
     middlewares.reqValidators.equipmentValidator,
     middlewares.validationErrorHandler,
     equipmentController.updateEquipment
 )
-router.post('/delete/:uuid', 
-    middlewares.auth.hasRole([ROLES.ADMIN]),
+router.get('/delete/:uuid', 
+    middlewares.auth.hasRole(ROLES.ADMIN),
     middlewares.reqValidators.idValidator.equipmentIdValidator,
     middlewares.validationErrorHandler,
     equipmentController.deleteEquipment

@@ -9,14 +9,46 @@ const apiInstance = axios.create({
   }
 })
 
+apiInstance.interceptors.response.use(
+  response => response,
+  error => {
+    let err;
+    if (error.response) {
+      err = new Error(error.response.data.message || 'Error in server response');
+    } else if (error.request) {
+      err = new Error('Can\'t connect to server.');
+    } else {
+      err = new Error(error.message);
+    }
+    return Promise.reject(err)
+  }
+)
+
 const get = async (endpoint) => {
-    const response = await apiInstance.get(endpoint)
-    return response.data
+  const response = await apiInstance.get(endpoint)
+  return response.data
+}
+
+const post = async (endpoint, data) => {
+  const response = await apiInstance.post(endpoint, data)
+  return response.data
+}
+
+const put = async (endpoint, data) => {
+  const response = await apiInstance.put(endpoint, data)
+  return response.data
+}
+
+const deleteMethod = async (endpoint) => {
+  const response = await apiInstance.delete(endpoint)
+  return response.data
 }
 
 const apiService = {
-    get,
-    // post, put, delete irían aquí usando apiInstance.post, etc.
+  get,
+  post,
+  put,
+  delete: deleteMethod,
 }
 
 export default apiService

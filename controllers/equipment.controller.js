@@ -1,3 +1,4 @@
+import equipmentService from "../service/equipment.service.js"
 import reviewService from "../service/review.service.js"
 
 const home = (req, res) => { 
@@ -12,8 +13,14 @@ const updateEquipment = (req, res) => {
     res.json({ content: 'Update Equipment' })
 }
 
-const deleteEquipment = (req, res) => {
-    res.json({ content: 'Delete Equipment' })
+const deleteEquipment = async (req, res) => {
+    try {
+        await equipmentService.deleteEquipment(req.params.uuid)
+        req.flash('success', 'Equipment deleted')
+    } catch (err) {
+        req.flash('error', err.message)
+    }
+    return res.redirectBack()
 }
 
 const equipmentCreateForm = (req, res) => {
@@ -54,7 +61,7 @@ const createReview = async (req, res) => {
         req.flash('error', err.message)
     }
 
-    return res.redirect(req.header('Referer') || '/')
+    return res.redirectBack()
 }
 
 const updateReview = async (req, res) => {
@@ -71,7 +78,7 @@ const updateReview = async (req, res) => {
         req.flash('error', err.message)
     }
 
-    return res.redirect(req.header('Referer') || '/')
+    return res.redirectBack()
 }
 
 const equipmentController = {
