@@ -49,6 +49,7 @@ app.use((req, res, next) => {
 })
 
 app.use(flash)
+app.use(middlewares.redirectBack)
 
 app.use('/', router.home)
 app.use('/auth', router.auth)
