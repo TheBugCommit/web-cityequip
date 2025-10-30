@@ -5,7 +5,6 @@ import ROLES from "../config/roles.config.js"
 
 const router = Router()
 
-router.get('/type/:type', equipmentController.equipmentsByType)
 router.get('/:uuid', 
     middlewares.reqValidators.idValidator.equipmentIdValidator,
     middlewares.validationErrorHandler,

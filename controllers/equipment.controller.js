@@ -12,14 +12,18 @@ import reviewService from "../service/review.service.js"
         - vista detall equipament
         - filtre per tipus
 
-        - 
-    - implementar paginacio per visualitzar els equipments
+*/
 
-
-*/  
-
-const home = (req, res) => { //TODO: render view with equipments pagination 
-    res.render('index')
+const home = async (req, res, next) => { //TODO: render view with equipments i type
+    try {
+        const equipments = await equipmentService.getAll()
+        res.render('index', {
+            title: 'Equipments',
+            equipments: equipments.data
+        })
+    } catch (err) {
+        next(err)
+    }
 }
 
 const createEquipment = async (req, res) => {
@@ -28,7 +32,7 @@ const createEquipment = async (req, res) => {
         req.flash('success', 'Equipment created')
     } catch (err) {
         req.flash('error', err.message)
-        if(err.errors && Array.isArray(err.errors)) 
+        if (err.errors && Array.isArray(err.errors))
             err.errors.forEach(error => req.flash('warning', error.message))
     }
     return res.redirectBack()
@@ -40,7 +44,7 @@ const updateEquipment = async (req, res) => {
         req.flash('success', 'Equipment updated')
     } catch (err) {
         req.flash('error', err.message)
-        if(err.errors && Array.isArray(err.errors)) 
+        if (err.errors && Array.isArray(err.errors))
             err.errors.forEach(error => req.flash('warning', error.message))
     }
     return res.redirectBack()
@@ -62,10 +66,6 @@ const equipmentCreateForm = (req, res) => {  //TODO: render view
 
 const equipmentUpdateForm = (req, res) => { //TODO: render view
     res.json({ content: 'Render equipment update form' })
-}
-
-const equipmentsByType = (req, res) => { //TODO: render view
-    res.json({ content: 'Filter equipment by type' })
 }
 
 const showEquipment = (req, res) => { //TODO: render view
@@ -121,7 +121,6 @@ const equipmentController = {
     deleteEquipment,
     equipmentCreateForm,
     equipmentUpdateForm,
-    equipmentsByType,
     showEquipment,
     showEquipmentsMap,
     showGlobalRanking,

@@ -1,56 +1,67 @@
+include mixins/_mixins
+include mixins/_flashNotifications
+
 doctype html
 html
   head
     title #{title}
-    link(rel='stylesheet' href='/css/style.css')
     link(rel='stylesheet' href='/css/bootstrap.min.css')
     link(rel="stylesheet" href="/icons/fontawesome-7.1.0/css/fontawesome.min.css")
+    link(rel='stylesheet' href='/css/style.css')
     link(rel='icon' href='data:;base64,iVBORw0KGgo=')
     meta(name="viewport" content="width=device-width, initial-scale=1")
-  body
+  body.bg-light
     block header
-      nav.navbar.navbar-expand-sm.bg-body-tertiary(data-bs-theme="dark")
-        div.container-fluid
-          a.navbar-brand(href='#')
-            img(src="/icons/logo.svg" alt="" width="140" height="40" title="Bootstrap")
+      nav.navbar.navbar-expand-sm.navbar-dark.bg-dark.shadow-sm
+        .container-fluid
+          a.navbar-brand(href='/')
+            //- Pots posar el teu logo SVG aquí
+            i.bi.bi-buildings-fill.me-2
+            | Equipaments
+          
           button.navbar-toggler(type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation")
             span.navbar-toggler-icon
+          
           .collapse.navbar-collapse#navbarNav
-            ul.navbar-nav
+            ul.navbar-nav.me-auto
+              //- El teu menú dinàmic
               each item in menu
                 li.nav-item
-                  a.nav-link(href=`#`)
-                    span #{item.title}
+                  a.nav-link(href=`#`) #{item.title}
 
-            .form-inline
-              input.form-control.mr-sm-2(type="text" placeholder="Coffee, beer..." name="search")
-              .search__results
-
-            ul.navbar-nav.ms-auto
+            ul.navbar-nav.ms-sm-3
               if user
-                li.nav-item
-                  a.nav-link
-                    i.fa.fa-user-circle(style="padding-right:5px")
-                    span #{user.name}
-                li.nav-item
-                  a.nav-link(href='/auth/logout')
-                    i.fa.fa-sign-out(style="padding-right:5px")
-                    |Log Out
+                li.nav-item.dropdown
+                  a.nav-link.dropdown-toggle(href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false")
+                    i.bi.bi-person-circle.me-1
+                    | #{user.name}
+                  ul.dropdown-menu.dropdown-menu-end
+                    li
+                      a.dropdown-item(href="/auth/profile") El meu Perfil
+                    li
+                      hr.dropdown-divider
+                    li
+                      a.dropdown-item(href='/auth/logout')
+                        i.bi.bi-box-arrow-right.me-2
+                        | Tanca Sessió
               else
                 li.nav-item
                   a.nav-link(href='/auth/register')
-                    i.fa.fa-user(style="padding-right:5px")
-                    |Sign Up
+                    i.bi.bi-person-plus.me-1
+                    | Registra't
                 li.nav-item
                   a.nav-link(href='/auth/login')
-                    i.fa.fa-sign-in(style="padding-right:5px")
-                    |Login
+                    i.bi.bi-box-arrow-in-right.me-1
+                    | Inicia Sessió
 
-    .content
+    main.container.my-4
+      +flashNotifications(messages)
+      
       block content
 
-      include mixins/_flashNotifications
-      +flashNotifications(messages)
+    footer.bg-dark.text-white.text-center.p-3.mt-5
+      p &copy; #{new Date().getFullYear()} - Equipaments
+
 
     block scripts
       script(src="/dist/bootstrap.bundle.min.js")

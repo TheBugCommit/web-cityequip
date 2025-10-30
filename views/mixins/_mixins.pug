@@ -1,0 +1,112 @@
+//- Mixin per a la icona de l'equipament (pots ampliar-lo)
+mixin equipmentIcon(tipus)
+  - tipus = tipus ? tipus.toLowerCase() : ''
+  if tipus.includes('biblioteca')
+    i.bi.bi-book.me-2.text-primary
+  else if tipus.includes('esportiu')
+    i.bi.bi-bicycle.me-2.text-success
+  else if tipus.includes('cívic')
+    i.bi.bi-people.me-2.text-info
+  else if tipus.includes('museu')
+    i.bi.bi-palette.me-2.text-warning
+  else
+    i.bi.bi-building.me-2.text-secondary
+
+//- Mixin per a la targeta d'equipament (per la graella)
+mixin equipmentCard(equipment)
+  //- Cada targeta serà una columna
+  .col
+    //- 'h-100' fa que totes les targetes tinguin la mateixa alçada
+    .card.h-100.shadow-sm.equipment-card.border-0
+      //- Fem que tot el cos de la targeta sigui un enllaç
+      a.card-body.text-decoration-none.d-flex.flex-column(href=`/equipament/${equipment.uuid}`)
+        h5.card-title.text-dark.fw-bold
+          +equipmentIcon(equipment.tipus)
+          | #{equipment.nom}
+        
+        h6.card-subtitle.mb-2
+          span.badge.bg-secondary.fw-normal= equipment.tipus
+        
+        p.card-text.text-muted.mb-1
+          i.bi.bi-geo-alt-fill.me-2
+          | #{equipment.localitzacio}
+        p.card-text.text-muted
+          i.bi.bi-pin-map.me-2
+          | Districte: #{equipment.districte}
+        
+        //- 'mt-auto' empeny l'enllaç cap avall
+        .mt-auto.text-end
+          span.text-primary.fw-bold Veure Detalls 
+            i.bi.bi-arrow-right-short
+
+//- Mixin per mostrar estrelles de valoració
+mixin starRating(rating)
+  //- Assegurem que el rating és un número
+  - const numRating = parseFloat(rating) || 0
+  - const fullStars = Math.floor(numRating)
+  - const halfStar = numRating % 1 >= 0.5 ? 1 : 0
+  - const emptyStars = 5 - fullStars - halfStar
+  
+  .rating.text-warning.fs-5(title=`Valoració: ${numRating} de 5`)
+    - for (let i = 0; i < fullStars; i++)
+      i.bi.bi-star-fill
+    - if (halfStar)
+      i.bi.bi-star-half
+    - for (let i = 0; i < emptyStars; i++)
+      i.bi.bi-star
+
+//- Mixin per mostrar una ressenya individual
+mixin reviewCard(review)
+  .list-group-item.py-3
+    //- Aquí aniria el nom de l'autor (si el tinguessis)
+    //- h6.mb-1 Autor Anònim
+    +starRating(review.rating)
+    p.mb-1.mt-2.fs-6= review.comment
+
+//- Mixin per al bloc de detall de l'equipament
+mixin equipmentDetail(equipment)
+  .card.shadow-sm.border-0
+    .card-body.p-4.p-md-5
+      .row.g-4
+        //- Columna d'informació
+        .col-lg-7
+          h1.display-6.fw-bold.mb-3
+            +equipmentIcon(equipment.tipus)
+            | #{equipment.nom}
+          
+          ul.list-unstyled.fs-5
+            li.mb-2
+              span.badge.bg-primary.fs-6= equipment.tipus
+            li.mb-2
+              strong.d-inline-block.me-2(style="min-width: 100px;") Adreça:
+              | #{equipment.localitzacio}
+            li.mb-2
+              strong.d-inline-block.me-2(style="min-width: 100px;") Districte:
+              | #{equipment.districte}
+            if equipment.horari
+              li.mb-2
+                strong.d-inline-block.me-2(style="min-width: 100px;") Horari:
+                | #{equipment.horari}
+            if equipment.telefon
+              li.mb-2
+                strong.d-inline-block.me-2(style="min-width: 100px;") Telèfon:
+                a(href=`tel:${equipment.telefon}`)= equipment.telefon
+            li.mb-2
+              strong.d-inline-block.me-2(style="min-width: 100px;") Entitat:
+              | #{equipment.nom_ens}
+            li.mb-2
+              strong.d-inline-block.me-2(style="min-width: 100px;") Municipal:
+              if equipment.municipal
+                span.badge.bg-success Sí
+              else
+                span.badge.bg-danger No
+
+        //- Columna del mapa (placeholder)
+        .col-lg-5
+          h4.text-muted.mb-3 Localització
+          //- Aquí és on aniria un mapa de Leaflet, Google Maps, etc.
+          //- Utilitzant equipment.latitud i equipment.longitud
+          #map.bg-secondary.bg-opacity-10.rounded.border(style="height: 300px; display: flex; align-items: center; justify-content: center; color: #6c757d;")
+            .text-center
+              i.bi.bi-map.fs-1
+              p (Aquí aniria el mapa)

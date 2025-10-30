@@ -1,0 +1,38 @@
+extends layout
+
+block content
+  //- Cridem al mixin que mostra el detall
+  //- (Has de passar la variable 'equipment' des del controlador)
+  +equipmentDetail(equipment)
+
+  //- Secció de Ressenyes
+  .mt-5
+    h2.display-6 Ressenyes
+    
+    //- Aquí aniria un formulari per afegir una nova ressenya (per a usuaris loguejats)
+    if user
+      .card.shadow-sm.my-4.border-0
+        .card-body
+          h5.card-title Deixa la teva opinió
+          form(action=`/equipment/reviews` method="POST")
+            .mb-3
+              label.form-label(for="rating") Valoració (de 1 a 5)
+              input.form-range(type="range" id="rating" name="rating" min="1" max="5" step="1" value="5" required)
+            .mb-3
+              label.form-label(for="comment") Comentari
+              textarea.form-control(id="comment" name="comment" rows="3")
+            button.btn.btn-primary(type="submit") Envia Ressenya
+    else
+      .alert.alert-secondary.my-4
+        a(href="/auth/login") Inicia sessió
+        |  per deixar una ressenya.
+
+    //- Llistat de ressenyes existents
+    .list-group.shadow-sm
+      if reviews && reviews.length > 0
+        each review in reviews
+          //- Cridem al mixin de la ressenya
+          +reviewCard(review)
+      else
+        .list-group-item
+          p.text-muted No hi ha ressenyes per a aquest equipament encara.

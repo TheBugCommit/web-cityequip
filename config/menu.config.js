@@ -1,5 +1,5 @@
 const baseMenu = [
-  { slug: '/stores', title: 'Stores' },
+  { slug: '/stores', title: 'Equipments' },
   { slug: '/tags', title: 'Tags' },
   { slug: '/top', title: 'Top' },
 ]
