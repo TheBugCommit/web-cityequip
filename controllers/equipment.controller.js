@@ -1,7 +1,24 @@
 import equipmentService from "../service/equipment.service.js"
 import reviewService from "../service/review.service.js"
 
-const home = (req, res) => {
+/* TODO: 
+    - render views
+        - vista de mapa global
+        - vista ranking global
+        - vista ranking personal
+        - vista equipments comentats
+        - vista creat equipament
+        - vista update equipament
+        - vista detall equipament
+        - filtre per tipus
+
+        - 
+    - implementar paginacio per visualitzar els equipments
+
+
+*/  
+
+const home = (req, res) => { //TODO: render view with equipments pagination 
     res.render('index')
 }
 
@@ -39,27 +56,27 @@ const deleteEquipment = async (req, res) => {
     return res.redirectBack()
 }
 
-const equipmentCreateForm = (req, res) => {
+const equipmentCreateForm = (req, res) => {  //TODO: render view
     res.json({ content: 'Render equipment create form' })
 }
 
-const equipmentUpdateForm = (req, res) => {
+const equipmentUpdateForm = (req, res) => { //TODO: render view
     res.json({ content: 'Render equipment update form' })
 }
 
-const equipmentsByType = (req, res) => {
+const equipmentsByType = (req, res) => { //TODO: render view
     res.json({ content: 'Filter equipment by type' })
 }
 
-const showEquipment = (req, res) => {
+const showEquipment = (req, res) => { //TODO: render view
     res.json({ content: 'Render Detailed equipment uuid' })
 }
 
-const showEquipmentsMap = (req, res) => {
+const showEquipmentsMap = (req, res) => { //TODO: render view
     res.json({ content: 'Render global map view' })
 }
 
-const showGlobalRanking = (req, res) => {
+const showGlobalRanking = (req, res) => { //TODO: render view
     res.json({ content: 'Global equipments puntuation ranking' })
 }
 

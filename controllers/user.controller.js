@@ -1,25 +1,27 @@
 import reviewService from "../service/review.service.js"
 
-const showEquipmentsReviewed = async (req, res, next) => { //TODO: TEST
+const showEquipmentsReviewed = async (req, res, next) => { //TODO: render view
     try {
         const reviews = await reviewService.getUserReviews(req.user._id)
         console.log(reviews)
         //res.render('path de la vista')  TODO: Vista
-        res.json({ message: 'show my reviews' })
     } catch (err) {
-        next(err)
+        req.flash('error', err.message)
     }
+
+    res.redirectBack()
 }
 
-const showReviewsRanking = async (req, res, next) => { //TODO: TEST
+const showReviewsRanking = async (req, res, next) => { //TODO: render view
     try {
         const reviews = await reviewService.getPersonalRanking(req.user._id)
         console.log(reviews)
         //res.render('path de la vista')  TODO: Vista
-        res.json({ message: 'Show user reviews ranking' })
     } catch (err) {
-        next(err)
+        req.flash('error', err.message)
     }
+
+    res.redirectBack()
 }
 
 const userController = {
