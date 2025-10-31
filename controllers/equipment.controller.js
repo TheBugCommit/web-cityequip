@@ -10,16 +10,34 @@ import reviewService from "../service/review.service.js"
         - vista creat equipament
         - vista update equipament
         - vista detall equipament
-        - filtre per tipus
+        - filtre per tipus (pendent de revisio)
+
+        - En la API, normalitzar majuscules i miniscules i tambe en els validadors
 
 */
 
 const home = async (req, res, next) => { //TODO: render view with equipments i type
     try {
-        const equipments = await equipmentService.getAll()
+        const filterType = req.query.type
+
+        const allEquipments = await equipmentService.getAll()
+
+        const unicTypes = [...new Set(
+            allEquipments
+                .map(eq => eq.tipus)
+                .filter(Boolean)
+        )].sort()
+
+        const equipmentsToShow = filterType
+            ? allEquipments.filter(eq => eq.tipus === filterType)
+            : allEquipments
+
         res.render('index', {
-            title: 'Equipments',
-            equipments: equipments.data
+            title: 'Equipaments',
+            equipments: equipmentsToShow,
+            unicTypes: unicTypes,
+            currentType: filterType,
+            user: req.user,
         })
     } catch (err) {
         next(err)

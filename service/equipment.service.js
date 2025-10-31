@@ -3,7 +3,11 @@ import apiService from "./api.service.js"
 import reviewService from "./review.service.js"
 
 const getAll = async () => {
-    return await apiService.get("/equipaments")
+    return (await apiService.get("/equipaments")).data
+}
+
+const getEquipmentsByType = async (type) => {
+    return await apiService.get(`/equipaments?${type}`)
 }
 
 const getEquipmentById = async (uuid) => {
@@ -37,7 +41,8 @@ const equipmentService = {
     getEquipmentById,
     createEquipment,
     updateEquipment,
-    deleteEquipment
+    deleteEquipment,
+    getEquipmentsByType
 }
 
 export default equipmentService

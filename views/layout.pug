@@ -10,7 +10,7 @@ html
     link(rel='stylesheet' href='/css/style.css')
     link(rel='icon' href='data:;base64,iVBORw0KGgo=')
     meta(name="viewport" content="width=device-width, initial-scale=1")
-  body.bg-light
+  body.bg-light.d-flex.flex-column.min-vh-100
     block header
       nav.navbar.navbar-expand-sm.navbar-dark.bg-dark.shadow-sm
         .container-fluid
@@ -54,7 +54,7 @@ html
                     i.bi.bi-box-arrow-in-right.me-1
                     | Inicia Sessió
 
-    main.container.my-4
+    main.container.my-4.flex-fill
       +flashNotifications(messages)
       
       block content
