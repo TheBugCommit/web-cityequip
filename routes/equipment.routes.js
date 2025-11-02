@@ -5,6 +5,38 @@ import ROLES from "../config/roles.config.js"
 
 const router = Router()
 
+// CRUD
+router.get('/new', 
+    middlewares.auth.hasRole(ROLES.ADMIN), 
+    equipmentController.equipmentCreateForm
+)
+router.post('/new', 
+    middlewares.auth.hasRole(ROLES.ADMIN),
+    middlewares.reqValidators.equipmentValidator,
+    middlewares.validationErrorHandler,
+    equipmentController.createEquipment
+)
+router.get('/edit/:uuid', 
+    middlewares.auth.hasRole(ROLES.ADMIN),
+    middlewares.reqValidators.idValidator.equipmentIdValidator,
+    middlewares.validationErrorHandler,
+    equipmentController.equipmentUpdateForm
+)
+
+router.post('/update/:uuid', 
+    middlewares.auth.hasRole(ROLES.ADMIN),
+    middlewares.reqValidators.idValidator.equipmentIdValidator,
+    middlewares.reqValidators.equipmentValidator,
+    middlewares.validationErrorHandler,
+    equipmentController.updateEquipment
+)
+router.get('/delete/:uuid', 
+    middlewares.auth.hasRole(ROLES.ADMIN),
+    middlewares.reqValidators.idValidator.equipmentIdValidator,
+    middlewares.validationErrorHandler,
+    equipmentController.deleteEquipment
+)
+
 router.get('/:uuid', 
     middlewares.reqValidators.idValidator.equipmentIdValidator,
     middlewares.validationErrorHandler,
@@ -30,37 +62,6 @@ router.post('/:uuid/review/:reviewId',
     middlewares.reqValidators.reviewValidator,
     middlewares.validationErrorHandler,
     equipmentController.updateReview
-)
-
-// CRUD
-router.get('/new', 
-    middlewares.auth.hasRole(ROLES.ADMIN), 
-    equipmentController.equipmentCreateForm
-)
-router.get('/edit/:uuid', 
-    middlewares.auth.hasRole(ROLES.ADMIN),
-    middlewares.reqValidators.idValidator.equipmentIdValidator,
-    middlewares.validationErrorHandler,
-    equipmentController.equipmentUpdateForm
-)
-router.post('/new', 
-    middlewares.auth.hasRole(ROLES.ADMIN),
-    middlewares.reqValidators.equipmentValidator,
-    middlewares.validationErrorHandler,
-    equipmentController.createEquipment
-)
-router.post('/update/:uuid', 
-    middlewares.auth.hasRole(ROLES.ADMIN),
-    middlewares.reqValidators.idValidator.equipmentIdValidator,
-    middlewares.reqValidators.equipmentValidator,
-    middlewares.validationErrorHandler,
-    equipmentController.updateEquipment
-)
-router.get('/delete/:uuid', 
-    middlewares.auth.hasRole(ROLES.ADMIN),
-    middlewares.reqValidators.idValidator.equipmentIdValidator,
-    middlewares.validationErrorHandler,
-    equipmentController.deleteEquipment
 )
 
 export default router

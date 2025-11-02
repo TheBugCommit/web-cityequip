@@ -1,0 +1,65 @@
+extends ../layout
+
+block content
+  .container
+    .card.shadow-sm.border-0
+      .card-body.p-4.p-md-5
+        h1.display-6.fw-bold.mb-4
+          i.bi.bi-plus-circle.me-2
+          | Nou Equipament
+
+        form(action="/equipment/new" method="POST")
+          .row.g-3
+            .col-md-6
+              label.form-label(for="nom") Nom *
+              input.form-control(type="text" name="nom" id="nom" required placeholder="Nom de l'equipament")
+
+            .col-md-6
+              label.form-label(for="tipus") Tipus
+              input.form-control(type="text" name="tipus" id="tipus" placeholder="Tipus (Biblioteca, Esportiu...)")
+
+            .col-md-6
+              label.form-label(for="localitzacio") Adreça
+              input.form-control(type="text" name="localitzacio" id="localitzacio" placeholder="Adreça")
+
+            .col-md-6
+              label.form-label(for="districte") Districte
+              input.form-control(type="text" name="districte" id="districte" placeholder="Districte")
+
+            .col-md-6
+              label.form-label(for="telefon") Telèfon
+              input.form-control(type="text" name="telefon" id="telefon" placeholder="Telèfon")
+
+            .col-md-6
+              label.form-label(for="horari") Horari
+              input.form-control(type="text" name="horari" id="horari" placeholder="Horari d'obertura")
+
+            .col-md-6
+              label.form-label(for="nom_ens") Entitat
+              input.form-control(type="text" name="nom_ens" id="nom_ens" placeholder="Entitat responsable" required)
+
+            .col-md-6
+              label.form-label(for="codi_ens") Codi Ens
+              input.form-control(type="text" name="codi_ens" id="codi_ens" placeholder="Codi de l'ens")
+
+            .col-md-6
+              label.form-label(for="latitud") Latitud
+              input.form-control(type="number" step="any" name="latitud" id="latitud" placeholder="41.1187")
+
+            .col-md-6
+              label.form-label(for="longitud") Longitud
+              input.form-control(type="number" step="any" name="longitud" id="longitud" placeholder="1.2445")
+
+            .col-md-6
+              .form-check.mt-4
+                input.form-check-input(type="checkbox" name="municipal" id="municipal" value="true")
+                label.form-check-label(for="municipal") És municipal?
+
+          .mt-4
+            button.btn.btn-primary.me-2(type="submit")
+              i.bi.bi-save.me-1
+              | Desar Equipament
+            a.btn.btn-secondary(href="/")
+              i.bi.bi-x-circle.me-1
+              | Cancel·lar
+

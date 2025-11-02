@@ -79,7 +79,10 @@ const deleteEquipment = async (req, res) => {
 }
 
 const equipmentCreateForm = (req, res) => {  //TODO: render view
-    res.json({ content: 'Render equipment create form' })
+    res.render('equipment/new', {
+    title: 'Nou Equipament',
+    user: req.user
+  })
 }
 
 const equipmentUpdateForm = (req, res) => { //TODO: render view

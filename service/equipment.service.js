@@ -1,4 +1,5 @@
 import mongoose from "mongoose"
+import {v4 as uuidv4} from "uuid"
 import apiService from "./api.service.js"
 import reviewService from "./review.service.js"
 
@@ -15,6 +16,7 @@ const getEquipmentById = async (uuid) => {
 }
 
 const createEquipment = async (data) => {
+    if (!data.uuid) data.uuid = uuidv4()
     return await apiService.post(`/equipaments`, data)
 }
 

@@ -27,7 +27,7 @@ html
               //- El teu menú dinàmic
               each item in menu
                 li.nav-item
-                  a.nav-link(href=`#`) #{item.title}
+                  a.nav-link(href=item.slug) #{item.title}
 
             ul.navbar-nav.ms-sm-3
               if user

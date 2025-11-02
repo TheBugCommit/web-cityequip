@@ -1,12 +1,12 @@
 const baseMenu = [
-  { slug: '/stores', title: 'Equipments' },
+  //{ slug: '/', title: 'Equipments' },
   { slug: '/tags', title: 'Tags' },
-  { slug: '/top', title: 'Top' },
+  { slug: '/ranking', title: 'Ranking Global' },
 ]
 
 const extraMenus = {
-  add: { slug: '/add', title: 'Add' },
-  admin: { slug: '/admin', title: 'Admin Panel' },
+  add: { slug: '/new', title: 'Afegir equipament' },
+  admin: { slug: '/admin', title: 'Panell Admin' },
 }
 
 const roleCapabilities = {
