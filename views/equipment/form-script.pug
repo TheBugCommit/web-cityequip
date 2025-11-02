@@ -1,0 +1,63 @@
+﻿script.
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("equipment-form")
+    if (!form) return
+
+    const prefixEl = document.getElementById("localitzacio-prefix")
+    const streetEl = document.getElementById("localitzacio-nom")
+    const numberEl = document.getElementById("localitzacio-numero")
+    const blockEl = document.getElementById("localitzacio-blq")
+    const staircaseEl = document.getElementById("localitzacio-esc")
+    const floorEl = document.getElementById("localitzacio-plnt")
+    const doorEl = document.getElementById("localitzacio-prt")
+    const postalEl = document.getElementById("localitzacio-cp")
+    const hiddenEl = document.getElementById("localitzacioHidden")
+
+    const combineAddress = () => {
+      const prefix = prefixEl.value.trim()
+      const street = streetEl.value.trim()
+      const number = numberEl.value.trim()
+      const block = blockEl.value.trim()
+      const staircase = staircaseEl.value.trim()
+      const floor = floorEl.value.trim()
+      const door = doorEl.value.trim()
+      const postalCode = postalEl.value.trim()
+
+      if (!street || !number || !postalCode) {
+        return hiddenEl.value
+      }
+
+      const parts = []
+      if (prefix) parts.push(prefix)
+      if (street) parts.push(street)
+      if (number) parts.push(number)
+
+      let address = parts.join(" ")
+      if (block) {
+        address += ` BLQ: ${block}`
+      }
+      if (staircase) {
+        address += ` ESC: ${staircase}`
+      }
+      if (floor) {
+        address += ` PLNT: ${floor}`
+      }
+      if (door) {
+        address += ` PRT: ${door}`
+      }
+      address += ` CP: ${postalCode}`
+
+      hiddenEl.value = address.trim()
+      return hiddenEl.value
+    }
+
+    const fields = [prefixEl, streetEl, numberEl, blockEl, staircaseEl, floorEl, doorEl, postalEl]
+    fields.forEach((field) => {
+      field.addEventListener("change", combineAddress)
+      field.addEventListener("blur", combineAddress)
+    })
+
+    form.addEventListener("submit", function () {
+      combineAddress()
+    })
+  })

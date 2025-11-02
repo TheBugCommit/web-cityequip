@@ -1,0 +1,23 @@
+﻿extends layout
+
+block content
+  .container
+    .card.shadow-sm.border-0
+      .card-body.p-4.p-md-5
+        h1.display-6.fw-bold.mb-4
+          i.bi.bi-pencil-square.me-2
+          | Editar Equipament
+
+        if equipment && equipment.nom
+          p.text-muted.mb-1 Pots editar nomes els camps que necessitis.
+          p.fs-5.fw-semibold.mb-4= equipment.nom
+        else
+          p.text-muted.mb-4 Modifica les dades que necessitis abans de desar.
+
+        - const formAction = typeof locals.formAction !== 'undefined' ? locals.formAction : (equipment && equipment.uuid ? `/equipment/update/${equipment.uuid}` : '/equipment/update')
+        - const submitLabel = typeof locals.submitLabel !== 'undefined' ? locals.submitLabel : 'Actualitzar equipament'
+        - const cancelHref = typeof locals.cancelHref !== 'undefined' ? locals.cancelHref : (equipment && equipment.uuid ? `/equipment/${equipment.uuid}` : '/')
+        include equipment/form
+
+block append scripts
+  include equipment/form-script

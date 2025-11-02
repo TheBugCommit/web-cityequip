@@ -5,7 +5,7 @@ const baseMenu = [
 ]
 
 const extraMenus = {
-  add: { slug: '/new', title: 'Afegir equipament' },
+  add: { slug: '/equipment/new', title: 'Afegir equipament' },
   admin: { slug: '/admin', title: 'Panell Admin' },
 }
 

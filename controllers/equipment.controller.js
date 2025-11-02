@@ -1,4 +1,4 @@
-import equipmentService from "../service/equipment.service.js"
+﻿import equipmentService from "../service/equipment.service.js"
 import reviewService from "../service/review.service.js"
 
 /* TODO: 
@@ -15,6 +15,37 @@ import reviewService from "../service/review.service.js"
         - En la API, normalitzar majuscules i miniscules i tambe en els validadors
 
 */
+
+const parseLocalitzacio = (localitzacio) => {
+    if (!localitzacio || typeof localitzacio !== 'string') return {}
+
+    const regex = /^(?:(CR|PL|AV|C|PZ|PS)\s+)?([\p{L}0-9][\p{L}0-9\s\-']*)\s+(\d+)\s*(?:BLQ:\s*([\p{L}0-9]{1,4})\s*)?(?:ESC:\s*([\p{L}0-9]{1,4})\s*)?(?:PLNT:\s*([\p{L}0-9]{1,4})\s*)?(?:PRT:\s*([\p{L}0-9]{1,4})\s*)?CP:\s*(\d{5})$/iu
+    const match = localitzacio.match(regex)
+    if (!match) return {}
+
+    const [
+        ,
+        prefix = '',
+        street = '',
+        number = '',
+        block = '',
+        staircase = '',
+        floor = '',
+        door = '',
+        postalCode = ''
+    ] = match
+
+    return {
+        prefix: prefix || '',
+        street: street.trim(),
+        number: number.trim(),
+        block: block ? block.trim() : '',
+        staircase: staircase ? staircase.trim() : '',
+        floor: floor ? floor.trim() : '',
+        door: door ? door.trim() : '',
+        postalCode: postalCode.trim()
+    }
+}
 
 const home = async (req, res, next) => { //TODO: render view with equipments i type
     try {
@@ -75,18 +106,39 @@ const deleteEquipment = async (req, res) => {
     } catch (err) {
         req.flash('error', err.message)
     }
-    return res.redirectBack()
+    return res.redirect('/')
 }
 
-const equipmentCreateForm = (req, res) => {  //TODO: render view
-    res.render('equipment/new', {
-    title: 'Nou Equipament',
-    user: req.user
-  })
+const equipmentCreateForm = (req, res) => {
+    res.render('new', {
+        title: 'Nou Equipament',
+        user: req.user
+    })
 }
 
-const equipmentUpdateForm = (req, res) => { //TODO: render view
-    res.json({ content: 'Render equipment update form' })
+const equipmentUpdateForm = async (req, res, next) => {
+    try {
+        const uuid = req.params.uuid
+        if (!uuid) throw new Error("UUID de l'equipament no especificat")
+
+        const response = await equipmentService.getEquipmentById(uuid)
+        const equipment = response.data || response
+        if (!equipment) throw new Error("Equipament no trobat")
+
+        const addressParts = parseLocalitzacio(equipment.localitzacio)
+
+        res.render('edit', {
+            title: `Editar: ${equipment.nom}`,
+            equipment: equipment,
+            addressParts: addressParts,
+            formAction: `/equipment/update/${equipment.uuid || uuid}`,
+            submitLabel: 'Actualitzar equipament',
+            cancelHref: `/equipment/${equipment.uuid || uuid}`,
+            user: req.user
+        })
+    } catch (err) {
+        next(err)
+    }
 }
 
 const showEquipment = async (req, res, next) => { //TODO: render view
@@ -171,3 +223,4 @@ const equipmentController = {
 }
 
 export default equipmentController
+
