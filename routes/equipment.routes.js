@@ -9,9 +9,13 @@ router.get('/:uuid',
     middlewares.reqValidators.idValidator.equipmentIdValidator,
     middlewares.validationErrorHandler,
     equipmentController.showEquipment
-)   
+)
+
 router.get('/map', equipmentController.showEquipmentsMap)
+
 router.get('/ranking/global', equipmentController.showGlobalRanking)
+
+
 router.post('/:uuid/review/new', 
     middlewares.auth.isAuthenticated,
     middlewares.reqValidators.idValidator.equipmentIdValidator,
@@ -33,7 +37,7 @@ router.get('/new',
     middlewares.auth.hasRole(ROLES.ADMIN), 
     equipmentController.equipmentCreateForm
 )
-router.get('/:uuid', 
+router.get('/edit/:uuid', 
     middlewares.auth.hasRole(ROLES.ADMIN),
     middlewares.reqValidators.idValidator.equipmentIdValidator,
     middlewares.validationErrorHandler,

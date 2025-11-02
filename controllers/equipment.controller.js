@@ -86,8 +86,29 @@ const equipmentUpdateForm = (req, res) => { //TODO: render view
     res.json({ content: 'Render equipment update form' })
 }
 
-const showEquipment = (req, res) => { //TODO: render view
-    res.json({ content: 'Render Detailed equipment uuid' })
+const showEquipment = async (req, res, next) => { //TODO: render view
+    try {
+        const uuid = req.params.uuid
+        if (!uuid) throw new Error("UUID de l'equipament no especificat")
+
+        // Obtenim les dades de l'equipament
+        const response = await equipmentService.getEquipmentById(uuid)
+        const equipment = response.data || response
+        if (!equipment) throw new Error("Equipament no trobat")
+
+        // Obtenim les ressenyes associades
+        const reviews = await reviewService.getReviewsByEquipment(uuid)
+
+        // Renderitzem la vista amb el mixin de detall i ressenyes
+        res.render('detail', {
+        title: `Detall: ${equipment.nom}`,
+        equipment: equipment,
+        reviews: reviews,
+        user: req.user
+        })
+    } catch (err) {
+        next(err)
+    }
 }
 
 const showEquipmentsMap = (req, res) => { //TODO: render view

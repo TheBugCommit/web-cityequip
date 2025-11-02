@@ -19,7 +19,7 @@ mixin equipmentCard(equipment)
     //- 'h-100' fa que totes les targetes tinguin la mateixa alçada
     .card.h-100.shadow-sm.equipment-card.border-0
       //- Fem que tot el cos de la targeta sigui un enllaç
-      a.card-body.text-decoration-none.d-flex.flex-column(href=`/equipament/${equipment.uuid}`)
+      a.card-body.text-decoration-none.d-flex.flex-column(href=`/equipment/${equipment.uuid}`)
         h5.card-title.text-dark.fw-bold
           +equipmentIcon(equipment.tipus)
           | #{equipment.nom}
@@ -78,7 +78,7 @@ mixin equipmentDetail(equipment)
             li.mb-2
               span.badge.bg-primary.fs-6= equipment.tipus
             li.mb-2
-              strong.d-inline-block.me-2(style="min-width: 100px;") Adreça:
+              strong.d-inline-block.me-2(style="min-width: 100px;") Adreça: 
               | #{equipment.localitzacio}
             li.mb-2
               strong.d-inline-block.me-2(style="min-width: 100px;") Districte:

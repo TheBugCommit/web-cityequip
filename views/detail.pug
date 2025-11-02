@@ -5,6 +5,15 @@ block content
   //- (Has de passar la variable 'equipment' des del controlador)
   +equipmentDetail(equipment)
 
+  if user && user.role === 'admin'
+    .mt-4
+      a.btn.btn-warning.me-2(href=`/equipment/edit/${equipment.uuid}`)
+        i.bi.bi-pencil-square.me-1
+        | Editar
+      a.btn.btn-danger(href=`/equipment/delete/${equipment.uuid}` onclick="return confirm('Segur que vols eliminar aquest equipament?');")
+        i.bi.bi-trash.me-1
+        | Eliminar
+
   //- Secció de Ressenyes
   .mt-5
     h2.display-6 Ressenyes
