@@ -7,13 +7,8 @@ import reviewService from "../service/review.service.js"
         - vista ranking global
         - vista ranking personal
         - vista equipments comentats
-        - vista creat equipament
-        - vista update equipament
-        - vista detall equipament
-        - filtre per tipus (pendent de revisio)
-
-        - En la API, normalitzar majuscules i miniscules i tambe en els validadors
-
+        - vista detall equipament (falta mapa, i posar puntuacio mitja)
+        - vista home, posar boto per crear equipment
 */
 
 const home = async (req, res, next) => {
