@@ -1,9 +1,6 @@
 mixin equipmentCard(equipment)
-  //- Cada targeta serà una columna
   .col
-    //- 'h-100' fa que totes les targetes tinguin la mateixa alçada
     .card.h-100.shadow-sm.equipment-card.border-0
-      //- Fem que tot el cos de la targeta sigui un enllaç
       a.card-body.text-decoration-none.d-flex.flex-column(href=`/equipment/${equipment.uuid}`)
         h5.card-title.text-dark.fw-bold
           | #{equipment.nom}
@@ -18,12 +15,10 @@ mixin equipmentCard(equipment)
           i.bi.bi-pin-map.me-2
           | Districte: #{equipment.districte}
         
-        //- 'mt-auto' empeny l'enllaç cap avall
         .mt-auto.text-end
           span.text-primary.fw-bold Veure Detalls 
             i.bi.bi-arrow-right-short
 
-//- Mixin per mostrar estrelles de valoració
 mixin starRating(rating)
   //- Assegurem que el rating és un número
   - const numRating = parseFloat(rating) || 0
@@ -39,7 +34,6 @@ mixin starRating(rating)
     - for (let i = 0; i < emptyStars; i++)
       i.bi.bi-star
 
-//- Mixin per mostrar una ressenya individual
 mixin reviewCard(review)
   .list-group-item.py-3
     //- Aquí aniria el nom de l'autor (si el tinguessis)
@@ -47,15 +41,12 @@ mixin reviewCard(review)
     +starRating(review.rating)
     p.mb-1.mt-2.fs-6= review.comment
 
-//- Mixin per al bloc de detall de l'equipament
 mixin equipmentDetail(equipment)
   .card.shadow-sm.border-0
     .card-body.p-4.p-md-5
       .row.g-4
-        //- Columna d'informació
         .col-lg-7
           h1.display-6.fw-bold.mb-3
-            +equipmentIcon(equipment.tipus)
             | #{equipment.nom}
           
           ul.list-unstyled.fs-5

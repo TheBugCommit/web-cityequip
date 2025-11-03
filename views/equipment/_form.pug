@@ -1,4 +1,4 @@
-mixin equipmentForm(equipment, actionUrl, submitText, cancelUrl, values)
+mixin equipmentForm(equipment, actionUrl, submitText, cancelUrl)
   form(action=actionUrl method="POST")
     .row.g-3
       .col-md-6
@@ -15,17 +15,17 @@ mixin equipmentForm(equipment, actionUrl, submitText, cancelUrl, values)
         input.form-control(
           type="text"
           name="tipus"
+          required
           placeholder="Biblioteca, Esportiu..."
           value=(equipment && equipment.tipus) || ''
         )
       .col-md-6
-        label.form-label(for="localitzacio-nom") Localització
+        label.form-label(for="localitzacio") Localització
         input.form-control(
           type="text"
           name="localitzacio"
-          required
           placeholder="PL DE LA FONT 1 BLQ: 0000 CP: 43003"
-          value=streetValue
+          value=(equipment && equipment.localitzacio) || ''
         )
 
       .col-md-6
@@ -36,7 +36,7 @@ mixin equipmentForm(equipment, actionUrl, submitText, cancelUrl, values)
           placeholder="612345678"
           pattern="\\d{9}"
           inputmode="numeric"
-          value=telefonValue
+          value=(equipment && equipment.telefon) || ''
         )
         small.form-text.text-muted Format: 9 digits sense espais
       .col-md-6
@@ -64,7 +64,7 @@ mixin equipmentForm(equipment, actionUrl, submitText, cancelUrl, values)
           placeholder="1234567890"
           pattern="\\d{10}"
           inputmode="numeric"
-          value=codiEnsValue
+          value=(equipment && equipment.codi_ens) || ''
         )
         small.form-text.text-muted Format: 10 digits
       .col-md-6
@@ -72,29 +72,29 @@ mixin equipmentForm(equipment, actionUrl, submitText, cancelUrl, values)
         input.form-control(
           type="number"
           name="latitud"
-          step="0.000001"
+          step="any"
           min="-90"
           max="90"
           placeholder="41.118700"
-          value=latitudValue
+          value=(equipment && equipment.latitud) || ''
         )
       .col-md-6
         label.form-label(for="longitud") Longitud
         input.form-control(
           type="number"
           name="longitud"
-          step="0.000001"
+          step="any"
           min="-180"
           max="180"
           placeholder="1.244500"
-          value=longitudValue
+          value=(equipment && equipment.longitud) || ''
         )
       .col-md-6
         label.form-label(for="municipal") Es municipal?
-        select.form-select(name="municipal")
-          option(value="" selected=municipalValue === '') Selecciona una opció
-          option(value="si" selected=municipalValue === 'si') Si
-          option(value="no" selected=municipalValue === 'no') No
+        select.form-select(name="municipal" required)
+          option(value="" selected=(equipment == undefined)) Selecciona una opció
+          option(value="true" selected=(equipment && equipment.municipal == true)) Sí
+          option(value="false" selected=(equipment && equipment.municipal == false)) No
 
     .mt-4.d-flex.align-items-center
       button.btn.btn-primary.me-2(type="submit")

@@ -15,7 +15,6 @@ html
       nav.navbar.navbar-expand-sm.navbar-dark.bg-dark.shadow-sm
         .container-fluid
           a.navbar-brand(href='/')
-            //- Pots posar el teu logo SVG aquí
             i.bi.bi-buildings-fill.me-2
             | Equipaments
           
@@ -24,7 +23,6 @@ html
           
           .collapse.navbar-collapse#navbarNav
             ul.navbar-nav.me-auto
-              //- El teu menú dinàmic
               each item in menu
                 li.nav-item
                   a.nav-link(href=item.slug) #{item.title}

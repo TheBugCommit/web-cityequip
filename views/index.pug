@@ -7,7 +7,7 @@ block content
     .dropdown
       button.btn.btn-outline-primary.dropdown-toggle(type="button" data-bs-toggle="dropdown" aria-expanded="false")
         i.bi.bi-filter.me-1
-        | #{currentType ? currentType : 'Filtra per type'}
+        | #{currentType ? currentType : 'Filtra per tipus'}
       ul.dropdown-menu.dropdown-menu-end
         li
           a.dropdown-item(href="/") Tots
@@ -19,12 +19,9 @@ block content
                 class=(selectedType === type ? 'active' : '')
               )= type
 
-  //- Graella responsiva
-  //- 1 columna en mòbil (default), 2 en tauleta (md), 3 en escriptori (lg)
   .row.row-cols-1.row-cols-md-2.row-cols-lg-3.g-4
     if equipments && equipments.length > 0
       each equipment in equipments
-        //- Cridem al mixin de la targeta
         +equipmentCard(equipment)
     else
       .col-12

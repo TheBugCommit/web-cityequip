@@ -92,7 +92,10 @@ const deleteEquipment = async (req, res) => {
 
 const equipmentCreateForm = (req, res) => {
     res.render('equipment/create', {
-        title: 'Nou Equipament',
+        title: `Crear Equipment`,
+        actionUrl: `/equipment/new`,
+        submitText: 'Crear equipament',
+        cancelUrl: `/`,
         user: req.user
     })
 }
@@ -107,9 +110,9 @@ const equipmentUpdateForm = async (req, res, next) => {
         res.render('equipment/edit', {
             title: `Editar: ${equipment.nom}`,
             equipment: equipment,
-            formAction: `/equipment/update/${equipment.uuid || uuid}`,
-            submitLabel: 'Actualitzar equipament',
-            cancelHref: `/equipment/${equipment.uuid || uuid}`,
+            actionUrl: `/equipment/update/${equipment.uuid}`,
+            submitText: 'Actualitzar equipament',
+            cancelUrl: `/equipment/${equipment.uuid}`,
             user: req.user
         })
     } catch (err) {

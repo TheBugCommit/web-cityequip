@@ -2,20 +2,20 @@ import { body } from 'express-validator'
 
 const equipmentValidator = [
   body('nom')
-    .notEmpty().withMessage('El nom es obligatori')
+    .trim().notEmpty().withMessage('El nom es obligatori')
     .isString().withMessage('El nom ha de ser una cadena'),
 
   body('horari')
-    .optional({ checkFalsy: true })
+    .trim().optional({ checkFalsy: true })
     .isString().withMessage('L\'horari ha de ser una cadena'),
 
   body('tipus')
-    .notEmpty().withMessage('El tipus és obligatori')
+    .trim().notEmpty().withMessage('El tipus és obligatori')
     .isString().withMessage('El tipus ha de ser una cadena'),
 
   body('municipal')
     .optional({ checkFalsy: true })
-    .isIn(['si', 'no']).withMessage('El valor seleccionat no es valid'),
+    .isIn(['true', 'false']).withMessage('El valor seleccionat no es valid'),
 
   body('latitud')
     .optional({ checkFalsy: true })
@@ -44,7 +44,7 @@ const equipmentValidator = [
     .matches(/^\d{10}$/).withMessage('codi_ens invalid'),
 
   body('nom_ens')
-    .notEmpty().withMessage('nom_ens es obligatori')
+    .trim().notEmpty().withMessage('nom_ens es obligatori')
     .isString().withMessage('nom_ens ha de ser una cadena')
 ]
 
