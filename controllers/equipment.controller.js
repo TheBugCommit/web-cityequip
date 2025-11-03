@@ -91,7 +91,7 @@ const deleteEquipment = async (req, res) => {
 }
 
 const equipmentCreateForm = (req, res) => {
-    res.render('new', {
+    res.render('equipment/create', {
         title: 'Nou Equipament',
         user: req.user
     })
@@ -104,7 +104,7 @@ const equipmentUpdateForm = async (req, res, next) => {
         const equipment = await equipmentService.getEquipmentById(uuid)
         if (!equipment) throw new Error("Equipament no trobat")
 
-        res.render('edit', {
+        res.render('equipment/edit', {
             title: `Editar: ${equipment.nom}`,
             equipment: equipment,
             formAction: `/equipment/update/${equipment.uuid || uuid}`,
