@@ -1,4 +1,4 @@
-﻿import equipmentService from "../service/equipment.service.js"
+import equipmentService from "../service/equipment.service.js"
 import reviewService from "../service/review.service.js"
 
 /* TODO: 
@@ -15,37 +15,6 @@ import reviewService from "../service/review.service.js"
         - En la API, normalitzar majuscules i miniscules i tambe en els validadors
 
 */
-
-const parseLocalitzacio = (localitzacio) => {
-    if (!localitzacio || typeof localitzacio !== 'string') return {}
-
-    const regex = /^(?:(CR|PL|AV|C|PZ|PS)\s+)?([\p{L}0-9][\p{L}0-9\s\-']*)\s+(\d+)\s*(?:BLQ:\s*([\p{L}0-9]{1,4})\s*)?(?:ESC:\s*([\p{L}0-9]{1,4})\s*)?(?:PLNT:\s*([\p{L}0-9]{1,4})\s*)?(?:PRT:\s*([\p{L}0-9]{1,4})\s*)?CP:\s*(\d{5})$/iu
-    const match = localitzacio.match(regex)
-    if (!match) return {}
-
-    const [
-        ,
-        prefix = '',
-        street = '',
-        number = '',
-        block = '',
-        staircase = '',
-        floor = '',
-        door = '',
-        postalCode = ''
-    ] = match
-
-    return {
-        prefix: prefix || '',
-        street: street.trim(),
-        number: number.trim(),
-        block: block ? block.trim() : '',
-        staircase: staircase ? staircase.trim() : '',
-        floor: floor ? floor.trim() : '',
-        door: door ? door.trim() : '',
-        postalCode: postalCode.trim()
-    }
-}
 
 const home = async (req, res, next) => { //TODO: render view with equipments i type
     try {
@@ -77,7 +46,7 @@ const home = async (req, res, next) => { //TODO: render view with equipments i t
 
 const createEquipment = async (req, res) => {
     try {
-        const equipment = await equipmentService.createEquipment(req.body)
+        await equipmentService.createEquipment(req.body)
         req.flash('success', 'Equipment created')
     } catch (err) {
         req.flash('error', err.message)
@@ -89,7 +58,7 @@ const createEquipment = async (req, res) => {
 
 const updateEquipment = async (req, res) => {
     try {
-        const equipment = await equipmentService.updateEquipment(req.params.uuid, req.body)
+        await equipmentService.updateEquipment(req.params.uuid, req.body)
         req.flash('success', 'Equipment updated')
     } catch (err) {
         req.flash('error', err.message)
@@ -125,7 +94,7 @@ const equipmentUpdateForm = async (req, res, next) => {
         const equipment = response.data || response
         if (!equipment) throw new Error("Equipament no trobat")
 
-        const addressParts = parseLocalitzacio(equipment.localitzacio)
+        const addressParts = equipment.address || {}
 
         res.render('edit', {
             title: `Editar: ${equipment.nom}`,
@@ -176,7 +145,7 @@ const showGlobalRanking = (req, res) => { //TODO: render view
 
 const createReview = async (req, res) => {
     try {
-        const review = await reviewService.createReview({
+        await reviewService.createReview({
             userId: req.user._id,
             equipmentUuid: req.params.uuid,
             rating: req.body.rating,
@@ -193,7 +162,7 @@ const createReview = async (req, res) => {
 
 const updateReview = async (req, res) => {
     try {
-        const updatedReview = await reviewService.updateReview({
+        await reviewService.updateReview({
             reviewId: req.params.reviewId,
             userId: req.user._id,
             equipmentUuid: req.params.uuid,

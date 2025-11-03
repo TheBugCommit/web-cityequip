@@ -1,4 +1,4 @@
-﻿- const eq = typeof equipment !== 'undefined' && equipment ? equipment : {}
+- const eq = typeof equipment !== 'undefined' && equipment ? equipment : {}
 - const address = typeof addressParts !== 'undefined' && addressParts ? addressParts : {}
 - const prefixValue = address.prefix || ''
 - const streetValue = address.street || ''
@@ -43,7 +43,7 @@ form#equipment-form(action=actionUrl method="POST")
       input#tipus.form-control(type="text" name="tipus" placeholder="Biblioteca, Esportiu..." value=eq.tipus || '')
     .col-md-3
       label.form-label(for="localitzacio-prefix") Tipus de via
-      select#localitzacio-prefix.form-select
+      select#localitzacio-prefix.form-select(name="address[prefix]")
         option(value="" selected=prefixValue === '') Sense prefix
         option(value="C" selected=prefixValue === 'C') C
         option(value="AV" selected=prefixValue === 'AV') AV
@@ -53,29 +53,29 @@ form#equipment-form(action=actionUrl method="POST")
         option(value="PS" selected=prefixValue === 'PS') PS
     .col-md-6
       label.form-label(for="localitzacio-nom") Nom del carrer *
-      input#localitzacio-nom.form-control(type="text" required placeholder="Diagonal" value=streetValue)
+      input#localitzacio-nom.form-control(type="text" name="address[street]" required placeholder="Diagonal" value=streetValue)
     .col-md-3
       label.form-label(for="localitzacio-numero") Numero *
-      input#localitzacio-numero.form-control(type="number" min="1" step="1" required placeholder="123" value=numberValue)
+      input#localitzacio-numero.form-control(type="number" name="address[number]" min="1" step="1" required placeholder="123" value=numberValue)
     .col-md-3
       label.form-label(for="localitzacio-blq") Bloc (opcional)
-      input#localitzacio-blq.form-control(type="text" pattern="[A-Za-z0-9]{1,4}" placeholder="ex. 12" value=blockValue)
+      input#localitzacio-blq.form-control(type="text" name="address[block]" pattern="[A-Za-z0-9]{1,4}" placeholder="ex. 12" value=blockValue)
       small.form-text.text-muted Fins a 4 caracters (digits o lletres)
     .col-md-3
       label.form-label(for="localitzacio-esc") Escala (opcional)
-      input#localitzacio-esc.form-control(type="text" pattern="[A-Za-z0-9]{1,4}" placeholder="ex. B" value=staircaseValue)
+      input#localitzacio-esc.form-control(type="text" name="address[staircase]" pattern="[A-Za-z0-9]{1,4}" placeholder="ex. B" value=staircaseValue)
       small.form-text.text-muted Fins a 4 caracters
     .col-md-3
       label.form-label(for="localitzacio-plnt") Planta (opcional)
-      input#localitzacio-plnt.form-control(type="text" pattern="[A-Za-z0-9]{1,4}" placeholder="ex. 3" value=floorValue)
+      input#localitzacio-plnt.form-control(type="text" name="address[floor]" pattern="[A-Za-z0-9]{1,4}" placeholder="ex. 3" value=floorValue)
       small.form-text.text-muted Fins a 4 caracters
     .col-md-3
       label.form-label(for="localitzacio-prt") Porta (opcional)
-      input#localitzacio-prt.form-control(type="text" pattern="[A-Za-z0-9]{1,4}" placeholder="ex. 2A" value=doorValue)
+      input#localitzacio-prt.form-control(type="text" name="address[door]" pattern="[A-Za-z0-9]{1,4}" placeholder="ex. 2A" value=doorValue)
       small.form-text.text-muted Fins a 4 caracters
     .col-md-6
       label.form-label(for="localitzacio-cp") Codi Postal *
-      input#localitzacio-cp.form-control(type="text" required maxlength="5" pattern="\\d{5}" inputmode="numeric" placeholder="08019" value=postalCodeValue)
+      input#localitzacio-cp.form-control(type="text" name="address[postalCode]" required maxlength="5" pattern="\\d{5}" inputmode="numeric" placeholder="08019" value=postalCodeValue)
       small.form-text.text-muted Format: 5 digits
     .col-md-6
       label.form-label(for="districte") Districte

@@ -16,7 +16,7 @@ block content
         if unicTypes 
           each type in unicTypes 
             li
-              //- Això filtrarà per query string, ex: /equipaments?type=Biblioteca
+              //- Això filtrarà per query string, ex: /equipments?type=Biblioteca
               a.dropdown-item(
                 href=`/?type=${type}`
                 class=(selectedType === type ? 'active' : '')
