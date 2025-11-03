@@ -16,10 +16,8 @@ import reviewService from "../service/review.service.js"
 
 */
 
-const home = async (req, res, next) => { //TODO: render view with equipments i type
+const home = async (req, res, next) => {
     try {
-        const filterType = req.query.type
-
         const allEquipments = await equipmentService.getAll()
 
         const unicTypes = [...new Set(
@@ -28,19 +26,33 @@ const home = async (req, res, next) => { //TODO: render view with equipments i t
                 .filter(Boolean)
         )].sort()
 
-        const equipmentsToShow = filterType
-            ? allEquipments.filter(eq => eq.tipus === filterType)
-            : allEquipments
+        req.session.unicTypes = unicTypes;
 
         res.render('index', {
             title: 'Equipaments',
-            equipments: equipmentsToShow,
+            equipments: allEquipments,
             unicTypes: unicTypes,
-            currentType: filterType,
             user: req.user,
         })
     } catch (err) {
         next(err)
+    }
+}
+
+const showEquipmentsByType = async (req, res, next) => {
+    try {
+        const type = req.params.type;
+        const equipments = await equipmentService.getEquipmentsByType(type);
+
+        res.render('index', {
+            title: 'Equipaments',
+            equipments: equipments,
+            unicTypes: req.session.unicTypes,
+            currentType: type,
+            user: req.user,
+        })
+    } catch(err) {
+        next(err);
     }
 }
 
@@ -90,8 +102,7 @@ const equipmentUpdateForm = async (req, res, next) => {
         const uuid = req.params.uuid
         if (!uuid) throw new Error("UUID de l'equipament no especificat")
 
-        const response = await equipmentService.getEquipmentById(uuid)
-        const equipment = response.data || response
+        const equipment = await equipmentService.getEquipmentById(uuid)
         if (!equipment) throw new Error("Equipament no trobat")
 
         const addressParts = equipment.address || {}
@@ -116,8 +127,7 @@ const showEquipment = async (req, res, next) => { //TODO: render view
         if (!uuid) throw new Error("UUID de l'equipament no especificat")
 
         // Obtenim les dades de l'equipament
-        const response = await equipmentService.getEquipmentById(uuid)
-        const equipment = response.data || response
+        const equipment = await equipmentService.getEquipmentById(uuid)
         if (!equipment) throw new Error("Equipament no trobat")
 
         // Obtenim les ressenyes associades
@@ -179,6 +189,7 @@ const updateReview = async (req, res) => {
 
 const equipmentController = {
     home,
+    showEquipmentsByType,
     createEquipment,
     updateEquipment,
     deleteEquipment,

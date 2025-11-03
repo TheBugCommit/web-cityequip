@@ -4,7 +4,6 @@ block content
   .d-flex.justify-content-between.align-items-center.mb-3
     h1.display-5 Equipaments
     
-    //- Botó de filtre per type (com demanaves)
     .dropdown
       button.btn.btn-outline-primary.dropdown-toggle(type="button" data-bs-toggle="dropdown" aria-expanded="false")
         i.bi.bi-filter.me-1
@@ -12,13 +11,11 @@ block content
       ul.dropdown-menu.dropdown-menu-end
         li
           a.dropdown-item(href="/") Tots
-        //- Hauràs de passar una variable 'unicTypes ' (un array de strings) des del teu controlador
         if unicTypes 
           each type in unicTypes 
             li
-              //- Això filtrarà per query string, ex: /equipments?type=Biblioteca
               a.dropdown-item(
-                href=`/?type=${type}`
+                href=`/filter/${type}`
                 class=(selectedType === type ? 'active' : '')
               )= type
 

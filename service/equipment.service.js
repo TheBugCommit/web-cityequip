@@ -8,11 +8,11 @@ const getAll = async () => {
 }
 
 const getEquipmentsByType = async (type) => {
-    return await apiService.get(`/equipments?${type}`)
+    return (await apiService.get(`/equipments?type=${type}`)).data
 }
 
 const getEquipmentById = async (uuid) => {
-    return await apiService.get(`/equipments/${uuid}`)
+    return (await apiService.get(`/equipments/${uuid}`)).data
 }
 
 const createEquipment = async (data) => {
