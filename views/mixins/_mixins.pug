@@ -1,18 +1,3 @@
-//- Mixin per a la icona de l'equipament (pots ampliar-lo)
-mixin equipmentIcon(tipus)
-  - tipus = tipus ? tipus.toLowerCase() : ''
-  if tipus.includes('biblioteca')
-    i.bi.bi-book.me-2.text-primary
-  else if tipus.includes('esportiu')
-    i.bi.bi-bicycle.me-2.text-success
-  else if tipus.includes('cívic')
-    i.bi.bi-people.me-2.text-info
-  else if tipus.includes('museu')
-    i.bi.bi-palette.me-2.text-warning
-  else
-    i.bi.bi-building.me-2.text-secondary
-
-//- Mixin per a la targeta d'equipament (per la graella)
 mixin equipmentCard(equipment)
   //- Cada targeta serà una columna
   .col
@@ -21,7 +6,6 @@ mixin equipmentCard(equipment)
       //- Fem que tot el cos de la targeta sigui un enllaç
       a.card-body.text-decoration-none.d-flex.flex-column(href=`/equipment/${equipment.uuid}`)
         h5.card-title.text-dark.fw-bold
-          +equipmentIcon(equipment.tipus)
           | #{equipment.nom}
         
         h6.card-subtitle.mb-2
