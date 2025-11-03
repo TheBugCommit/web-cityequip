@@ -1,4 +1,5 @@
 ﻿extends layout
+include _form
 
 block content
   .container
@@ -10,10 +11,4 @@ block content
 
         p.text-muted.mb-4 Omple el formulari per crear un nou equipament.
 
-        - const formAction = "/equipment/new"
-        - const submitLabel = "Desar equipament"
-        - const cancelHref = "/"
-        include equipment/form
-
-block append scripts
-  include equipment/form-script
+        +equipmentForm(equipment, actionUrl, submitText, cancelUrl, values)

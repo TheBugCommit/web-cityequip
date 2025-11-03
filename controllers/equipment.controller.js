@@ -51,7 +51,7 @@ const showEquipmentsByType = async (req, res, next) => {
             currentType: type,
             user: req.user,
         })
-    } catch(err) {
+    } catch (err) {
         next(err);
     }
 }
@@ -100,17 +100,13 @@ const equipmentCreateForm = (req, res) => {
 const equipmentUpdateForm = async (req, res, next) => {
     try {
         const uuid = req.params.uuid
-        if (!uuid) throw new Error("UUID de l'equipament no especificat")
 
         const equipment = await equipmentService.getEquipmentById(uuid)
         if (!equipment) throw new Error("Equipament no trobat")
 
-        const addressParts = equipment.address || {}
-
         res.render('edit', {
             title: `Editar: ${equipment.nom}`,
             equipment: equipment,
-            addressParts: addressParts,
             formAction: `/equipment/update/${equipment.uuid || uuid}`,
             submitLabel: 'Actualitzar equipament',
             cancelHref: `/equipment/${equipment.uuid || uuid}`,
@@ -121,24 +117,21 @@ const equipmentUpdateForm = async (req, res, next) => {
     }
 }
 
-const showEquipment = async (req, res, next) => { //TODO: render view
+const showEquipment = async (req, res, next) => {
     try {
         const uuid = req.params.uuid
         if (!uuid) throw new Error("UUID de l'equipament no especificat")
 
-        // Obtenim les dades de l'equipament
         const equipment = await equipmentService.getEquipmentById(uuid)
         if (!equipment) throw new Error("Equipament no trobat")
 
-        // Obtenim les ressenyes associades
         const reviews = await reviewService.getReviewsByEquipment(uuid)
 
-        // Renderitzem la vista amb el mixin de detall i ressenyes
-        res.render('detail', {
-        title: `Detall: ${equipment.nom}`,
-        equipment: equipment,
-        reviews: reviews,
-        user: req.user
+        res.render('equipment/detail', {
+            title: `Detall: ${equipment.nom}`,
+            equipment: equipment,
+            reviews: reviews,
+            user: req.user
         })
     } catch (err) {
         next(err)

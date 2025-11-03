@@ -60,7 +60,7 @@ const getUserReviews = async (userId) => {
             .select('equipmentUuid rating comment updatedAt')
             .sort('-updatedAt')
     } catch (err) {
-        throw handleMongooseError(err, 'Error deleting many reviews')
+        throw handleMongooseError(err, 'Error getting user reviews')
     }
 }
 
@@ -78,7 +78,7 @@ const getGlobalRanking = async (limit = 3) => {
             { $limit: limit }
         ])
     } catch (err) {
-        throw handleMongooseError(err, 'Error deleting many reviews')
+        throw handleMongooseError(err, 'Error getting global ranking')
     }
 }
 
@@ -89,7 +89,7 @@ const getPersonalRanking = async (userId, limit = 3) => {
             .sort({ rating: -1, updatedAt: -1 })
             .limit(limit)
     } catch (err) {
-        throw handleMongooseError(err, 'Error deleting many reviews')
+        throw handleMongooseError(err, 'Error getting personal ranking')
     }
 }
 
@@ -100,7 +100,7 @@ const getReviewsByEquipment = async (equipmentUuid) => {
             .select('rating comment createdAt updatedAt')
             .sort({ createdAt: -1 })
     } catch (err) {
-        throw handleMongooseError(err, 'Error deleting many reviews')
+        throw handleMongooseError(err, 'Error getting reviews by equipment')
     }
 }
 

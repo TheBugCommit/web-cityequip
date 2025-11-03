@@ -1,0 +1,105 @@
+mixin equipmentForm(equipment, actionUrl, submitText, cancelUrl, values)
+  form(action=actionUrl method="POST")
+    .row.g-3
+      .col-md-6
+        label.form-label(for="nom") Nom *
+        input.form-control(
+          type="text"
+          name="nom"
+          required
+          placeholder="Nom de l'equipament"
+          value=(equipment && equipment.nom) || ''
+        )
+      .col-md-6
+        label.form-label(for="tipus") Tipus *
+        input.form-control(
+          type="text"
+          name="tipus"
+          placeholder="Biblioteca, Esportiu..."
+          value=(equipment && equipment.tipus) || ''
+        )
+      .col-md-6
+        label.form-label(for="localitzacio-nom") Localització
+        input.form-control(
+          type="text"
+          name="localitzacio"
+          required
+          placeholder="PL DE LA FONT 1 BLQ: 0000 CP: 43003"
+          value=streetValue
+        )
+
+      .col-md-6
+        label.form-label(for="telefon") Telefon
+        input.form-control(
+          type="tel"
+          name="telefon"
+          placeholder="612345678"
+          pattern="\\d{9}"
+          inputmode="numeric"
+          value=telefonValue
+        )
+        small.form-text.text-muted Format: 9 digits sense espais
+      .col-md-6
+        label.form-label(for="horari") Horari
+        input.form-control(
+          type="text"
+          name="horari"
+          placeholder="De dilluns a divendres, de 9 a 14"
+          value=(equipment && equipment.horari) || ''
+        )
+      .col-md-6
+        label.form-label(for="nom_ens") Entitat *
+        input.form-control(
+          type="text"
+          name="nom_ens"
+          required
+          placeholder="Entitat responsable"
+          value=(equipment && equipment.nom_ens) || ''
+        )
+      .col-md-6
+        label.form-label(for="codi_ens") Codi ens
+        input.form-control(
+          type="text"
+          name="codi_ens"
+          placeholder="1234567890"
+          pattern="\\d{10}"
+          inputmode="numeric"
+          value=codiEnsValue
+        )
+        small.form-text.text-muted Format: 10 digits
+      .col-md-6
+        label.form-label(for="latitud") Latitud
+        input.form-control(
+          type="number"
+          name="latitud"
+          step="0.000001"
+          min="-90"
+          max="90"
+          placeholder="41.118700"
+          value=latitudValue
+        )
+      .col-md-6
+        label.form-label(for="longitud") Longitud
+        input.form-control(
+          type="number"
+          name="longitud"
+          step="0.000001"
+          min="-180"
+          max="180"
+          placeholder="1.244500"
+          value=longitudValue
+        )
+      .col-md-6
+        label.form-label(for="municipal") Es municipal?
+        select.form-select(name="municipal")
+          option(value="" selected=municipalValue === '') Selecciona una opció
+          option(value="si" selected=municipalValue === 'si') Si
+          option(value="no" selected=municipalValue === 'no') No
+
+    .mt-4.d-flex.align-items-center
+      button.btn.btn-primary.me-2(type="submit")
+        i.bi.bi-save.me-1
+        | #{submitText}
+      a.btn.btn-secondary(href=cancelUrl)
+        i.bi.bi-x-circle.me-1
+        | Cancel·lar

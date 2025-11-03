@@ -1,36 +1,5 @@
 import { body } from 'express-validator'
 
-const ADDRESS_PREFIXES = [
-  'RB',
-  'CR',
-  'AV',
-  'PG',
-  'PL',
-  'CM',
-  'AC',
-  'CT',
-  'PE',
-  'ML',
-  'CL',
-  'BL',
-  'PR',
-  'PJ',
-  'DM',
-  'C',
-  'PZ',
-  'PS'
-]
-
-const NUMBER_REGEX = /^(?:S\/N|\d+(?:[-/]\d+)?(?:\s*[A-Za-z0-9]+)*)$/i
-const OPTIONAL_FIELD_REGEX = /^[\p{L}0-9\-][\p{L}0-9\-\s\/\.]{0,29}$/u
-const POSTAL_CODE_REGEX = /^\d{5}$/
-
-const sanitizeSegment = (value) => {
-  if (value === undefined || value === null) return ''
-  if (typeof value === 'string') return value.trim()
-  return value.toString().trim()
-}
-
 const equipmentValidator = [
   body('nom')
     .notEmpty().withMessage('El nom es obligatori')
@@ -41,7 +10,7 @@ const equipmentValidator = [
     .isString().withMessage('L\'horari ha de ser una cadena'),
 
   body('tipus')
-    .optional({ checkFalsy: true })
+    .notEmpty().withMessage('El tipus és obligatori')
     .isString().withMessage('El tipus ha de ser una cadena'),
 
   body('municipal')
@@ -57,56 +26,6 @@ const equipmentValidator = [
     .optional({ checkFalsy: true })
     .isFloat({ min: -180, max: 180 }).withMessage('Longitud invalida, entre -180 i 180')
     .toFloat(),
-
-  body('address')
-    .custom((value, { req }) => {
-      if (!value || typeof value !== 'object' || Array.isArray(value)) {
-        throw new Error('Cal informar l\'adreça')
-      }
-
-      const prefix = sanitizeSegment(value.prefix).toUpperCase()
-      const street = sanitizeSegment(value.street)
-      const number = sanitizeSegment(value.number)
-      const block = sanitizeSegment(value.block)
-      const staircase = sanitizeSegment(value.staircase)
-      const floor = sanitizeSegment(value.floor)
-      const door = sanitizeSegment(value.door)
-      const postalCode = sanitizeSegment(value.postalCode)
-
-      if (prefix && !ADDRESS_PREFIXES.includes(prefix)) {
-        throw new Error('Prefix de via invalid')
-      }
-
-      if (!street) throw new Error('Indica el carrer')
-      if (!postalCode) throw new Error('Indica el codi postal')
-      if (!POSTAL_CODE_REGEX.test(postalCode)) {
-        throw new Error('El codi postal ha de tenir 5 digits')
-      }
-
-      if (number && !NUMBER_REGEX.test(number)) {
-        throw new Error('El numero te un format invalid')
-      }
-
-      const optionalFields = { block, staircase, floor, door }
-      for (const [field, fieldValue] of Object.entries(optionalFields)) {
-        if (fieldValue && !OPTIONAL_FIELD_REGEX.test(fieldValue)) {
-          throw new Error(`El camp ${field} te un format invalid`)
-        }
-      }
-
-      req.body.address = {
-        prefix: prefix || undefined,
-        street,
-        number: number || undefined,
-        block: block || undefined,
-        staircase: staircase || undefined,
-        floor: floor || undefined,
-        door: door || undefined,
-        postalCode
-      }
-
-      return true
-    }),
 
   body('localitzacio')
     .optional({ checkFalsy: true })
