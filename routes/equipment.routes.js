@@ -8,6 +8,7 @@ const router = Router()
 // CRUD
 router.get('/new', 
     middlewares.auth.hasRole(ROLES.ADMIN), 
+    middlewares.ensureUnicTypes,
     equipmentController.equipmentCreateForm
 )
 router.post('/new', 
@@ -20,6 +21,7 @@ router.get('/edit/:uuid',
     middlewares.auth.hasRole(ROLES.ADMIN),
     middlewares.reqValidators.idValidator.equipmentIdValidator,
     middlewares.validationErrorHandler,
+    middlewares.ensureUnicTypes,
     equipmentController.equipmentUpdateForm
 )
 

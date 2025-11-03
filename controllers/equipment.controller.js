@@ -20,18 +20,10 @@ const home = async (req, res, next) => {
     try {
         const allEquipments = await equipmentService.getAll()
 
-        const unicTypes = [...new Set(
-            allEquipments
-                .map(eq => eq.tipus)
-                .filter(Boolean)
-        )].sort()
-
-        req.session.unicTypes = unicTypes;
-
         res.render('index', {
             title: 'Equipaments',
             equipments: allEquipments,
-            unicTypes: unicTypes,
+            unicTypes: req.session.unicTypes || [],
             user: req.user,
         })
     } catch (err) {
@@ -47,7 +39,7 @@ const showEquipmentsByType = async (req, res, next) => {
         res.render('index', {
             title: 'Equipaments',
             equipments: equipments,
-            unicTypes: req.session.unicTypes,
+            unicTypes: req.session.unicTypes || [],
             currentType: type,
             user: req.user,
         })
@@ -96,6 +88,7 @@ const equipmentCreateForm = (req, res) => {
         actionUrl: `/equipment/new`,
         submitText: 'Crear equipament',
         cancelUrl: `/`,
+        unicTypes: req.session.unicTypes || [], 
         user: req.user
     })
 }
@@ -113,6 +106,7 @@ const equipmentUpdateForm = async (req, res, next) => {
             actionUrl: `/equipment/update/${equipment.uuid}`,
             submitText: 'Actualitzar equipament',
             cancelUrl: `/equipment/${equipment.uuid}`,
+            unicTypes: req.session.unicTypes || [], 
             user: req.user
         })
     } catch (err) {

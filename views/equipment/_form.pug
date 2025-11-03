@@ -1,5 +1,5 @@
-mixin equipmentForm(equipment, actionUrl, submitText, cancelUrl)
-  form(action=actionUrl method="POST")
+mixin equipmentForm(equipment, actionUrl, submitText, cancelUrl, unicTypes)
+  form#equipment-form(action=actionUrl method="POST")
     .row.g-3
       .col-md-6
         label.form-label(for="nom") Nom *
@@ -12,13 +12,20 @@ mixin equipmentForm(equipment, actionUrl, submitText, cancelUrl)
         )
       .col-md-6
         label.form-label(for="tipus") Tipus *
-        input.form-control(
+        .d-flex.align-items-center
+          select#tipus-select.form-select.me-2(name="tipus")
+            option(value="" selected=!equipment) Selecciona un tipus
+            each unicType in unicTypes
+              option(value=unicType selected=(equipment && equipment.tipus == unicType))= unicType
+          button#add-tipus-btn.btn.btn-outline-secondary(type="button")
+            i.fa-solid.fa-plus
+
+        input#tipus-text-input.d-none.form-control.mt-2(
           type="text"
-          name="tipus"
-          required
-          placeholder="Biblioteca, Esportiu..."
-          value=(equipment && equipment.tipus) || ''
+          placeholder="Escriu un nou tipus..."
+          value=""
         )
+        small.form-text.text-muted Escull un tipus o afegeix un de nou
       .col-md-6
         label.form-label(for="localitzacio") Localització
         input.form-control(
@@ -90,7 +97,7 @@ mixin equipmentForm(equipment, actionUrl, submitText, cancelUrl)
           value=(equipment && equipment.longitud) || ''
         )
       .col-md-6
-        label.form-label(for="municipal") Es municipal?
+        label.form-label(for="municipal") Es municipal ? *
         select.form-select(name="municipal" required)
           option(value="" selected=(equipment == undefined)) Selecciona una opció
           option(value="true" selected=(equipment && equipment.municipal == true)) Sí
