@@ -37,24 +37,24 @@ router.get('/delete/:uuid',
     equipmentController.deleteEquipment
 )
 
-router.get('/:uuid', 
-    middlewares.reqValidators.idValidator.equipmentIdValidator,
-    middlewares.validationErrorHandler,
-    equipmentController.showEquipment
-)
-
 router.get('/map', equipmentController.showEquipmentsMap)
 
 router.get('/ranking/global', equipmentController.showGlobalRanking)
 
-
-router.post('/:uuid/review/new', 
+router.post('/review/new/:uuid', 
     middlewares.auth.isAuthenticated,
     middlewares.reqValidators.idValidator.equipmentIdValidator,
     middlewares.reqValidators.reviewValidator,
     middlewares.validationErrorHandler,
     equipmentController.createReview
 )
+
+router.get('/:uuid', 
+    middlewares.reqValidators.idValidator.equipmentIdValidator,
+    middlewares.validationErrorHandler,
+    equipmentController.showEquipment
+)
+
 router.post('/:uuid/review/:reviewId', 
     middlewares.auth.isAuthenticated,
     middlewares.reqValidators.idValidator.equipmentIdValidator,

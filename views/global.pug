@@ -1,0 +1,35 @@
+extends layout
+
+block content
+  h1.display-5.mb-4 Ranking Global
+
+  if equipments && equipments.length
+    .list-group.shadow-sm
+      each entry, index in equipments
+        - const equipmentId = entry.uuid || entry.equipmentUuid || entry._id || entry.id
+        - const equipmentName = entry.name || entry.nom || entry.title
+        - const totalReviews = entry.reviewsCount ?? entry.totalReviews ?? entry.count
+        - const averageRating = entry.avgRating ?? entry.rating ?? entry.average
+        .list-group-item.py-3
+          .d-flex.flex-column.flex-md-row.justify-content-between.align-items-md-center.gap-3
+            .d-flex.align-items-center.gap-3
+              span.badge.bg-primary.rounded-pill.px-3.py-2.fs-6 #{index + 1}
+              .d-flex.flex-column
+                if equipmentName
+                  h5.fw-bold.mb-1= equipmentName
+                else if equipmentId
+                  h5.fw-bold.mb-1 Equipament #{equipmentId}
+                else
+                  h5.fw-bold.mb-1 Equipament desconegut
+                if equipmentId
+                  small.text-muted UUID: #{equipmentId}
+                if typeof totalReviews === 'number'
+                  span.badge.bg-secondary.mt-2 #{totalReviews} ressenya(s)
+            if typeof averageRating === 'number'
+              .text-md-end
+                +starRating(averageRating)
+            else if entry.ratingDetails
+              .text-md-end
+                +starRating(entry.ratingDetails)
+  else
+    .alert.alert-info No s'han trobat resultats per al rànquing.

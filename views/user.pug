@@ -1,0 +1,30 @@
+extends layout
+
+block content
+  h1.display-5.mb-4 Ranking Personal
+
+  if equipments && equipments.length
+    .list-group.shadow-sm
+      each review, index in equipments
+        - const equipmentId = review.equipmentUuid || review.uuid || review._id || review.id
+        - const updatedAt = review.updatedAt ? new Date(review.updatedAt).toLocaleString() : null
+        .list-group-item.py-3
+          .d-flex.flex-column.gap-2
+            .d-flex.flex-column.flex-md-row.justify-content-between.gap-3
+              .d-flex.flex-column
+                h5.fw-bold.mb-1 Entrada #{index + 1}
+                if equipmentId
+                  small.text-muted Equipament: #{equipmentId}
+                if review.title || review.name
+                  small.text-muted= review.title || review.name
+              if typeof review.rating === 'number'
+                .text-md-end
+                  +starRating(review.rating)
+            if review.comment
+              p.mb-0= review.comment
+            else
+              p.mb-0.text-muted No hi ha comentari registrat.
+            if updatedAt
+              small.text-muted.mt-1 Actualitzat: #{updatedAt}
+  else
+    .alert.alert-info No s'han trobat reviews personals.

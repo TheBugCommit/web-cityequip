@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  h1.display-5.mb-4 Les meves reviews
+  
+  .row.row-cols-1.row-cols-md-2.row-cols-lg-3.g-4
+    if equipments && equipments.length > 0
+      each equipment in equipments
+        //- Cridem al mixin de la targeta
+        +reviewCard(equipment)
+    else
+      .col-12
+        .alert.alert-info No s'han trobat equipaments.

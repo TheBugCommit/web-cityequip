@@ -1,7 +1,7 @@
 const baseMenu = [
   //{ slug: '/', title: 'Equipments' },
   { slug: '/tags', title: 'Tags' },
-  { slug: '/ranking', title: 'Ranking Global' },
+  { slug: '/equipment/ranking/global', title: 'Ranking Global' },
 ]
 
 const extraMenus = {

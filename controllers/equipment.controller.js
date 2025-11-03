@@ -145,8 +145,18 @@ const showEquipmentsMap = (req, res) => { //TODO: render view
     res.json({ content: 'Render global map view' })
 }
 
-const showGlobalRanking = (req, res) => { //TODO: render view
-    res.json({ content: 'Global equipments puntuation ranking' })
+const showGlobalRanking = async (req, res, next) => { //TODO: render view
+    try {
+        const items = await reviewService.getGlobalRanking(3)
+
+        res.render('global', {
+            title: 'Ranking Global',
+            equipments: items,
+            user: req.user
+        })
+    } catch (err) {
+        next(err)
+    }
 }
 
 const createReview = async (req, res) => {
