@@ -1,8 +1,28 @@
 import { body } from 'express-validator'
 
-const ADDRESS_PREFIXES = ['CR', 'PL', 'AV', 'C', 'PZ', 'PS']
-const OPTIONAL_FIELD_REGEX = /^[\p{L}0-9]{1,4}$/u
-const NUMBER_REGEX = /^\d+$/
+const ADDRESS_PREFIXES = [
+  'RB',
+  'CR',
+  'AV',
+  'PG',
+  'PL',
+  'CM',
+  'AC',
+  'CT',
+  'PE',
+  'ML',
+  'CL',
+  'BL',
+  'PR',
+  'PJ',
+  'DM',
+  'C',
+  'PZ',
+  'PS'
+]
+
+const NUMBER_REGEX = /^(?:S\/N|\d+(?:[-/]\d+)?(?:\s*[A-Za-z0-9]+)*)$/i
+const OPTIONAL_FIELD_REGEX = /^[\p{L}0-9\-][\p{L}0-9\-\s\/\.]{0,29}$/u
 const POSTAL_CODE_REGEX = /^\d{5}$/
 
 const sanitizeSegment = (value) => {
@@ -41,14 +61,10 @@ const equipmentValidator = [
   body('address')
     .custom((value, { req }) => {
       if (!value || typeof value !== 'object' || Array.isArray(value)) {
-        throw new Error('Cal informar l\'adreca')
+        throw new Error('Cal informar l\'adreça')
       }
 
       const prefix = sanitizeSegment(value.prefix).toUpperCase()
-      if (prefix && !ADDRESS_PREFIXES.includes(prefix)) {
-        throw new Error('Prefix de via invalid')
-      }
-
       const street = sanitizeSegment(value.street)
       const number = sanitizeSegment(value.number)
       const block = sanitizeSegment(value.block)
@@ -57,12 +73,18 @@ const equipmentValidator = [
       const door = sanitizeSegment(value.door)
       const postalCode = sanitizeSegment(value.postalCode)
 
-      if (!street) throw new Error('Indica el carrer')
-      if (!number) throw new Error('Indica el numero')
-      if (!postalCode) throw new Error('Indica el codi postal')
+      if (prefix && !ADDRESS_PREFIXES.includes(prefix)) {
+        throw new Error('Prefix de via invalid')
+      }
 
-      if (!NUMBER_REGEX.test(number)) {
-        throw new Error('El numero ha de ser numeric')
+      if (!street) throw new Error('Indica el carrer')
+      if (!postalCode) throw new Error('Indica el codi postal')
+      if (!POSTAL_CODE_REGEX.test(postalCode)) {
+        throw new Error('El codi postal ha de tenir 5 digits')
+      }
+
+      if (number && !NUMBER_REGEX.test(number)) {
+        throw new Error('El numero te un format invalid')
       }
 
       const optionalFields = { block, staircase, floor, door }
@@ -72,14 +94,10 @@ const equipmentValidator = [
         }
       }
 
-      if (!POSTAL_CODE_REGEX.test(postalCode)) {
-        throw new Error('El codi postal ha de tenir 5 digits')
-      }
-
       req.body.address = {
         prefix: prefix || undefined,
         street,
-        number,
+        number: number || undefined,
         block: block || undefined,
         staircase: staircase || undefined,
         floor: floor || undefined,
@@ -112,4 +130,3 @@ const equipmentValidator = [
 ]
 
 export default equipmentValidator
-

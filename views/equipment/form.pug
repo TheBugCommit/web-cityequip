@@ -8,6 +8,7 @@
 - const floorValue = address.floor || ''
 - const doorValue = address.door || ''
 - const postalCodeValue = address.postalCode || ''
+- const prefixOptions = ['RB','CR','AV','PG','PL','CM','AC','CT','PE','ML','CL','BL','PR','PJ','DM','C','PZ','PS']
 - const actionUrl = typeof formAction !== 'undefined' ? formAction : '/equipment/new'
 - const submitText = typeof submitLabel !== 'undefined' ? submitLabel : 'Desar equipament'
 - const cancelUrl = typeof cancelHref !== 'undefined' ? cancelHref : '/'
@@ -45,34 +46,31 @@ form#equipment-form(action=actionUrl method="POST")
       label.form-label(for="localitzacio-prefix") Tipus de via
       select#localitzacio-prefix.form-select(name="address[prefix]")
         option(value="" selected=prefixValue === '') Sense prefix
-        option(value="C" selected=prefixValue === 'C') C
-        option(value="AV" selected=prefixValue === 'AV') AV
-        option(value="PL" selected=prefixValue === 'PL') PL
-        option(value="CR" selected=prefixValue === 'CR') CR
-        option(value="PZ" selected=prefixValue === 'PZ') PZ
-        option(value="PS" selected=prefixValue === 'PS') PS
+        each optionPrefix in prefixOptions
+          option(value=optionPrefix selected=prefixValue === optionPrefix)= optionPrefix
     .col-md-6
       label.form-label(for="localitzacio-nom") Nom del carrer *
       input#localitzacio-nom.form-control(type="text" name="address[street]" required placeholder="Diagonal" value=streetValue)
     .col-md-3
-      label.form-label(for="localitzacio-numero") Numero *
-      input#localitzacio-numero.form-control(type="number" name="address[number]" min="1" step="1" required placeholder="123" value=numberValue)
+      label.form-label(for="localitzacio-numero") Numero
+      input#localitzacio-numero.form-control(type="text" name="address[number]" placeholder="123 o S/N" value=numberValue)
+      small.form-text.text-muted Accepta números, rangs (ex. 7-9) o S/N
     .col-md-3
       label.form-label(for="localitzacio-blq") Bloc (opcional)
-      input#localitzacio-blq.form-control(type="text" name="address[block]" pattern="[A-Za-z0-9]{1,4}" placeholder="ex. 12" value=blockValue)
-      small.form-text.text-muted Fins a 4 caracters (digits o lletres)
+      input#localitzacio-blq.form-control(type="text" name="address[block]" placeholder="ex. D" value=blockValue maxlength="30")
+      small.form-text.text-muted Pots indicar text o números (ex. Sant Tadeu)
     .col-md-3
       label.form-label(for="localitzacio-esc") Escala (opcional)
-      input#localitzacio-esc.form-control(type="text" name="address[staircase]" pattern="[A-Za-z0-9]{1,4}" placeholder="ex. B" value=staircaseValue)
-      small.form-text.text-muted Fins a 4 caracters
+      input#localitzacio-esc.form-control(type="text" name="address[staircase]" placeholder="ex. 1" value=staircaseValue maxlength="30")
+      small.form-text.text-muted Opcional
     .col-md-3
       label.form-label(for="localitzacio-plnt") Planta (opcional)
-      input#localitzacio-plnt.form-control(type="text" name="address[floor]" pattern="[A-Za-z0-9]{1,4}" placeholder="ex. 3" value=floorValue)
-      small.form-text.text-muted Fins a 4 caracters
+      input#localitzacio-plnt.form-control(type="text" name="address[floor]" placeholder="ex. 3, BAIXOS, -1" value=floorValue maxlength="30")
+      small.form-text.text-muted Pots indicar plantes especials (BAIXOS, -1, etc.)
     .col-md-3
       label.form-label(for="localitzacio-prt") Porta (opcional)
-      input#localitzacio-prt.form-control(type="text" name="address[door]" pattern="[A-Za-z0-9]{1,4}" placeholder="ex. 2A" value=doorValue)
-      small.form-text.text-muted Fins a 4 caracters
+      input#localitzacio-prt.form-control(type="text" name="address[door]" placeholder="ex. 2A" value=doorValue maxlength="30")
+      small.form-text.text-muted Opcional
     .col-md-6
       label.form-label(for="localitzacio-cp") Codi Postal *
       input#localitzacio-cp.form-control(type="text" name="address[postalCode]" required maxlength="5" pattern="\\d{5}" inputmode="numeric" placeholder="08019" value=postalCodeValue)

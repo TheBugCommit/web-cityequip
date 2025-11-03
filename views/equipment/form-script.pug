@@ -16,14 +16,15 @@
     const combineAddress = () => {
       const prefix = prefixEl.value.trim()
       const street = streetEl.value.trim()
-      const number = numberEl.value.trim()
+      const numberRaw = numberEl.value.trim()
+      const number = numberRaw ? numberRaw.toUpperCase().replace(/\s+/g, " ") : ""
       const block = blockEl.value.trim()
       const staircase = staircaseEl.value.trim()
       const floor = floorEl.value.trim()
       const door = doorEl.value.trim()
       const postalCode = postalEl.value.trim()
 
-      if (!street || !number || !postalCode) {
+      if (!street || !postalCode) {
         return hiddenEl.value
       }
 
@@ -45,7 +46,9 @@
       if (door) {
         address += ` PRT: ${door}`
       }
-      address += ` CP: ${postalCode}`
+      if (postalCode) {
+        address += ` CP: ${postalCode}`
+      }
 
       hiddenEl.value = address.trim()
       return hiddenEl.value
