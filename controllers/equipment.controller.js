@@ -1,3 +1,4 @@
+import equipmentCache from "../cache/equipment.cache.js"
 import equipmentService from "../service/equipment.service.js"
 import reviewService from "../service/review.service.js"
 
@@ -18,7 +19,6 @@ const home = async (req, res, next) => {
         res.render('index', {
             title: 'Equipaments',
             equipments: allEquipments,
-            unicTypes: req.session.unicTypes || [],
             user: req.user,
         })
     } catch (err) {
@@ -28,24 +28,25 @@ const home = async (req, res, next) => {
 
 const showEquipmentsByType = async (req, res, next) => {
     try {
-        const type = req.params.type;
-        const equipments = await equipmentService.getEquipmentsByType(type);
+        const type = req.params.type
+        const equipments = await equipmentService.getEquipmentsByType(type)
 
         res.render('index', {
             title: 'Equipaments',
             equipments: equipments,
-            unicTypes: req.session.unicTypes || [],
             currentType: type,
             user: req.user,
         })
     } catch (err) {
-        next(err);
+        next(err)
     }
 }
 
 const createEquipment = async (req, res) => {
     try {
         await equipmentService.createEquipment(req.body)
+        equipmentCache.addType(req.body.tipus)
+
         req.flash('success', 'Equipment created')
     } catch (err) {
         req.flash('error', err.message)
@@ -58,6 +59,8 @@ const createEquipment = async (req, res) => {
 const updateEquipment = async (req, res) => {
     try {
         await equipmentService.updateEquipment(req.params.uuid, req.body)
+        equipmentCache.addType(req.body.tipus)
+
         req.flash('success', 'Equipment updated')
     } catch (err) {
         req.flash('error', err.message)
@@ -83,7 +86,6 @@ const equipmentCreateForm = (req, res) => {
         actionUrl: `/equipment/new`,
         submitText: 'Crear equipament',
         cancelUrl: `/`,
-        unicTypes: req.session.unicTypes || [], 
         user: req.user
     })
 }
@@ -101,7 +103,7 @@ const equipmentUpdateForm = async (req, res, next) => {
             actionUrl: `/equipment/update/${equipment.uuid}`,
             submitText: 'Actualitzar equipament',
             cancelUrl: `/equipment/${equipment.uuid}`,
-            unicTypes: req.session.unicTypes || [], 
+            unicTypes: req.session.unicTypes || [],
             user: req.user
         })
     } catch (err) {

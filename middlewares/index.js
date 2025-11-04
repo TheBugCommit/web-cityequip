@@ -9,13 +9,11 @@ import hasRole from './auth/role.middleware.js'
 import reviewValidator from './validators/review.validator.js'
 import equipmentValidator from './validators/equipment.validator.js'
 import redirectBack from './redirectBack.middleware.js'
-import ensureUnicTypes from './ensureTypes.middleware.js'
 
 const middlewares = {
     errorHandler: errorHandler,
     validationErrorHandler: validationErrorHandler,
     redirectBack: redirectBack,
-    ensureUnicTypes: ensureUnicTypes,
     auth: {
         isAuthenticated: isAuthenticated,
         hasRole: hasRole

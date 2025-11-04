@@ -1,5 +1,5 @@
 import path from 'path'
-import 'dotenv/config';
+import 'dotenv/config'
 import express from 'express'
 import { fileURLToPath } from 'url'
 import session from 'express-session'
@@ -10,6 +10,7 @@ import { getMenuForRole } from './config/menu.config.js'
 import { flash } from './helpers/flash.helper.js'
 import initPassport from './service/passport.service.js'
 import passport from 'passport'
+import equipmentCache from './cache/equipment.cache.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -36,13 +37,19 @@ app.use(session({
 
 initPassport()
 app.use(passport.initialize())
-app.use(passport.session())
+app.use(passport.session());
+
+(async () => {
+  await equipmentCache.init()
+  equipmentCache.scheduleAutoSync(5 * 60 * 1000)
+})()
 
 app.use((req, res, next) => {
   const role = req.user?.role || 'guest'
   res.locals.menu = getMenuForRole(role)
   res.locals.currentPath = req.path
-  res.locals.user = req.user || null;
+  res.locals.user = req.user || null
+  res.locals.unicTypes = equipmentCache.getAllTypes()
   res.locals.messages = req.session.messages || {}
   req.session.messages = {}
   next()
@@ -57,10 +64,10 @@ app.use('/equipment', router.equipment)
 app.use('/user', router.user)
 
 app.use((req, res, next) => {
-    const err = new Error('Page not found');
-    err.status = 404;
-    next(err);
-});
+    const err = new Error('Page not found')
+    err.status = 404
+    next(err)
+})
 
 app.use(middlewares.errorHandler)
 

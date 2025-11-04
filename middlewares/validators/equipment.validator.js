@@ -41,11 +41,11 @@ const equipmentValidator = [
 
   body('codi_ens')
     .optional({ checkFalsy: true })
-    .matches(/^\d{10}$/).withMessage('codi_ens invalid'),
+    .matches(/^\d{10}$/).withMessage('Codi entitat invalid'),
 
   body('nom_ens')
-    .trim().notEmpty().withMessage('nom_ens es obligatori')
-    .isString().withMessage('nom_ens ha de ser una cadena')
+    .trim().notEmpty().withMessage('Nom entitat es obligatori')
+    .isString().withMessage('Nom entitat ha de ser una cadena')
 ]
 
 export default equipmentValidator
