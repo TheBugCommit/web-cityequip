@@ -103,7 +103,6 @@ const equipmentUpdateForm = async (req, res, next) => {
             actionUrl: `/equipment/update/${equipment.uuid}`,
             submitText: 'Actualitzar equipament',
             cancelUrl: `/equipment/${equipment.uuid}`,
-            unicTypes: req.session.unicTypes || [],
             user: req.user
         })
     } catch (err) {
