@@ -9,10 +9,10 @@ block content
   if user && user.role === 'admin'
     .mt-4
       a.btn.btn-warning.me-2(href=`/equipment/edit/${equipment.uuid}`)
-        i.bi.bi-pencil-square.me-1
+        i.fa-solid.fa-pencil.me-1
         | Editar
       a.btn.btn-danger.confirmation(href=`/equipment/delete/${equipment.uuid}`)
-        i.bi.bi-trash.me-1
+        i.fa-solid.fa-trash.me-1
         | Eliminar
 
   .mt-5
