@@ -31,7 +31,6 @@ mixin reviewCard(name, comment, rating, date = null, isOwner = false, equipmentU
         .collapse.mt-3(id=`edit-review-${reviewUuid}`)
           form(action=`/equipment/${equipmentUuid}/review/${reviewUuid}/update` method="POST")
             .mb-2
-              label.form-label Valoració
               +starRating(rating, 0, true)
             .mb-2
               label.form-label Comentari
