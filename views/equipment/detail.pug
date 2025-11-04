@@ -1,8 +1,7 @@
 extends ../layout
+include ../reviews/_reviewCard
 
 block content
-  //- Cridem al mixin que mostra el detall
-  //- (Has de passar la variable 'equipment' des del controlador)
   +equipmentDetail(equipment)
 
   if user && user.role === 'admin'
@@ -10,38 +9,43 @@ block content
       a.btn.btn-warning.me-2(href=`/equipment/edit/${equipment.uuid}`)
         i.bi.bi-pencil-square.me-1
         | Editar
-      a.btn.btn-danger(href=`/equipment/delete/${equipment.uuid}` onclick="return confirm('Segur que vols eliminar aquest equipament?');")
+      a.btn.btn-danger.confirmation(href=`/equipment/delete/${equipment.uuid}`)
         i.bi.bi-trash.me-1
         | Eliminar
 
-  //- Secció de Ressenyes
   .mt-5
-    h2.display-6 Ressenyes
-    
-    //- Aquí aniria un formulari per afegir una nova ressenya (per a usuaris loguejats)
-    if user
-      .card.shadow-sm.my-4.border-0
-        .card-body
-          h5.card-title Deixa la teva opinió
-          form(action=`/equipment/review/new/${equipment.uuid}` method="POST")
-            .mb-3
-              label.form-label(for="rating") Valoració (de 1 a 5)
-              input.form-range(type="range" id="rating" name="rating" min="1" max="5" step="1" value="5" required)
-            .mb-3
-              label.form-label(for="comment") Comentari
-              textarea.form-control(id="comment" name="comment" rows="3")
-            button.btn.btn-primary(type="submit") Envia Ressenya
-    else
-      .alert.alert-secondary.my-4
-        a(href="/auth/login") Inicia sessió
-        |  per deixar una ressenya.
+  h2.display-6 Ressenyes
 
-    //- Llistat de ressenyes existents
+  if user
+    .card.shadow-sm.my-4.border-0
+      .card-body
+        h5.card-title.mb-4 Deixa la teva opinió
+        form#review-form(action=`/equipment/${equipment.uuid}/review/create` method="POST")
+          .mb-3
+            +starRating(0, 0, true)
+          .mb-3
+            label.form-label(for="comment") Comentari
+            textarea.form-control(id="comment" name="comment" rows="3" placeholder="Escriu la teva opinió...")
+
+          button.btn.btn-primary(type="submit") Envia Ressenya
+
     .list-group.shadow-sm
-      if reviews && reviews.length > 0
-        each review in reviews
-          //- Cridem al mixin de la ressenya
-          +reviewCard(review)
-      else
-        .list-group-item
-          p.text-muted No hi ha ressenyes per a aquest equipament encara.
+      .list-group-item.py-3
+        if Array.isArray(equipment.reviews) && equipment.reviews.length > 0
+          each review in equipment.reviews
+            +reviewCard(
+              review.user.name, 
+              review.comment, 
+              review.rating,
+              review.updatedAt,
+              user._id.toString() === review.user._id.toString(),
+              equipment.uuid,
+              review.uuid
+            )
+        else
+          .list-group-item
+            p.text-muted No hi ha ressenyes.
+  else
+    .alert.alert-secondary.my-4
+      a(href="/auth/login") Inicia sessió
+      |  per deixar una ressenya.

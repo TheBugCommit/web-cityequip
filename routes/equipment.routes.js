@@ -40,7 +40,7 @@ router.get('/map', equipmentController.showEquipmentsMap)
 
 router.get('/ranking/global', equipmentController.showGlobalRanking)
 
-router.post('/review/new/:uuid', 
+router.post('/:uuid/review/create', 
     middlewares.auth.isAuthenticated,
     middlewares.reqValidators.idValidator.equipmentIdValidator,
     middlewares.reqValidators.reviewValidator,
@@ -54,7 +54,7 @@ router.get('/:uuid',
     equipmentController.showEquipment
 )
 
-router.post('/:uuid/review/:reviewId', 
+router.post('/:uuid/review/:reviewId/update', 
     middlewares.auth.isAuthenticated,
     middlewares.reqValidators.idValidator.equipmentIdValidator,
     middlewares.reqValidators.idValidator.reviewIdValidator,

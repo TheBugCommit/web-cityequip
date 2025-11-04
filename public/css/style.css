@@ -1,4 +1,6 @@
 @import url('/css/flash_notifications.css');
+@import url('/css/star_rating.css');
+@import url('/css/.reviews.css');
 
 .content {
   padding: 10px;

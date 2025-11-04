@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from "uuid"
 import Review from '../models/review.model.js'
 import createError from '../utils/error.utils.js'
 import handleMongooseError from '../utils/handleMongooseError.utils.js'
@@ -6,7 +5,6 @@ import handleMongooseError from '../utils/handleMongooseError.utils.js'
 const createReview = async ({ userId, equipmentUuid, rating, comment = '' }) => {
     try {
         const reviewData = {
-            uuid: uuidv4(),
             user: userId,
             equipmentUuid: equipmentUuid,
             rating: rating,
@@ -93,11 +91,47 @@ const getPersonalRanking = async (userId, limit = 3) => {
     }
 }
 
+const getAvgRatingForEquipment = async (equipmentUuid) => {
+    try {
+        const result = await Review.aggregate([
+            { $match: { equipmentUuid: equipmentUuid } },
+            {
+                $group: {
+                    _id: "$equipmentUuid",
+                    avgRating: { $avg: "$rating" }
+                }
+            }
+        ])
+
+        const avgRating = result.length > 0 ? result[0].avgRating : 0
+        return avgRating
+    } catch (err) {
+        throw handleMongooseError(err, 'Error calculating avg rating')
+    }
+}
+
+
+const getAvgRatingForAllEquipments = async () => {
+    try {
+        const result = await Review.aggregate([
+            { 
+                $group: {
+                    _id: "$equipmentUuid",
+                    avgRating: { $avg: "$rating" }
+                }
+            }
+        ])
+
+        return result
+    } catch (err) {
+        throw handleMongooseError(err, 'Error getting avg ratings for all equipments')
+    }
+}
+
 const getReviewsByEquipment = async (equipmentUuid) => {
     try {
-        return await Review.find({ equipmentUuid })
-            .populate('user', 'name email')
-            .select('rating comment createdAt updatedAt')
+        return await Review.find({ "equipmentUuid": equipmentUuid })
+            .populate('user', 'uuid name')
             .sort({ createdAt: -1 })
     } catch (err) {
         throw handleMongooseError(err, 'Error getting reviews by equipment')
@@ -112,6 +146,8 @@ const reviewService = {
     getPersonalRanking,
     getReviewsByEquipment,
     deleteReviewsByEquipment,
+    getAvgRatingForAllEquipments,
+    getAvgRatingForEquipment
 }
 
 export default reviewService

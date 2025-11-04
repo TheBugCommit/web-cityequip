@@ -14,6 +14,8 @@ mixin equipmentCard(equipment)
         p.card-text.text-muted
           i.bi.bi-pin-map.me-2
           | Districte: #{equipment.districte}
+
+        +starRating(0, equipment.avgRating || 0, false)
         
         .mt-auto.text-end
           span.text-primary.fw-bold Veure Detalls 
@@ -39,27 +41,32 @@ mixin rankingCard(entry)
           .mt-auto
             small.text-muted Sense puntuacions disponibles
 
-mixin starRating(rating)
-  //- Assegurem que el rating és un número
-  - const numRating = parseFloat(rating) || 0
-  - const fullStars = Math.floor(numRating)
-  - const halfStar = numRating % 1 >= 0.5 ? 1 : 0
-  - const emptyStars = 5 - fullStars - halfStar
-  
-  .rating.text-warning.fs-5(title=`Valoració: ${numRating} de 5`)
-    - for (let i = 0; i < fullStars; i++)
-      i.bi.bi-star-fill
-    - if (halfStar)
-      i.bi.bi-star-half
-    - for (let i = 0; i < emptyStars; i++)
-      i.bi.bi-star
+mixin starRating(rating = 0, avgRating = 0, interactive = false)
+  if interactive
+    label.form-label(for="rating") Puntuació
+      .star-rating
+        each i in [1, 2, 3, 4, 5]
+          i.fa-star.fa-regular.star(data-value=i)
+        input(type="hidden" name="rating" value=rating)
+  else
+    - const fullStars = Math.floor(avgRating)
+    - const remainder = avgRating - fullStars
+    - const partialPercent = Math.round(remainder * 100)
+    - const emptyStars = 5 - fullStars - (partialPercent > 0 ? 1 : 0)
 
-mixin reviewCard(review)
-  .list-group-item.py-3
-    //- Aquí aniria el nom de l'autor (si el tinguessis)
-    //- h6.mb-1 Autor Anònim
-    +starRating(review.rating)
-    p.mb-1.mt-2.fs-6= review.comment
+    .star-rating.readonly
+      each i in [...Array(fullStars).keys()]
+        i.fa-solid.fa-star.filled
+
+      if partialPercent > 0
+        i.fa-regular.fa-star
+          i.fa-solid.fa-star.star-partial(class=`star-partial-${partialPercent}`)
+
+      each i in [...Array(emptyStars).keys()]
+        i.fa-regular.fa-star
+
+    if avgRating
+      span.ms-2.text-muted #{avgRating.toFixed(1)}
 
 mixin equipmentDetail(equipment)
   .card.shadow-sm.border-0

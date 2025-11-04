@@ -1,22 +1,54 @@
 import mongoose from "mongoose"
-import { v4 as uuidv4 } from "uuid"
 import apiService from "./api.service.js"
 import reviewService from "./review.service.js"
 
+const mergeEquipmentsWithAvgRating = (equipments, avgRatings) => {
+    const avgRatingIndex = avgRatings.reduce((acc, rating) => {
+        acc[rating._id] = rating.avgRating
+        return acc
+    }, {})
+
+    return equipments.map(equipment => ({
+        ...equipment,
+        avgRating: avgRatingIndex[equipment.uuid] || null,
+    }))
+}
+
 const getAll = async () => {
-    return (await apiService.get("/equipments")).data
+    const [equipaments, avgRatings] = await Promise.all([
+        apiService.get("/equipments"),
+        reviewService.getAvgRatingForAllEquipments()
+    ])
+
+    const equipments = equipaments.data
+    return mergeEquipmentsWithAvgRating(equipments, avgRatings)
 }
 
 const getEquipmentsByType = async (type) => {
-    return (await apiService.get(`/equipments?type=${type}`)).data
+    const [equipaments, avgRatings] = await Promise.all([
+        apiService.get(`/equipments?type=${type}`),
+        reviewService.getAvgRatingForAllEquipments()
+    ])
+
+    const equipments = equipaments.data
+    return mergeEquipmentsWithAvgRating(equipments, avgRatings)
 }
 
 const getEquipmentById = async (uuid) => {
-    return (await apiService.get(`/equipments/${uuid}`)).data
+    const [equipament, reviews, avgRating] = await Promise.all([
+        apiService.get(`/equipments/${uuid}`),
+        reviewService.getReviewsByEquipment(uuid),
+        reviewService.getAvgRatingForEquipment(uuid)
+    ])
+
+    const equipment = equipament.data
+    equipment.reviews = reviews
+    equipment.avgRating = avgRating
+    
+    return equipment
 }
 
 const createEquipment = async (data) => {
-    if (!data.uuid) data.uuid = uuidv4()
     return await apiService.post(`/equipments`, data)
 }
 
@@ -34,7 +66,7 @@ const deleteEquipment = async (uuid) => {
     } catch (err) {
         throw err
     } finally {
-        session.endSession();
+        session.endSession()
     }
 }
 

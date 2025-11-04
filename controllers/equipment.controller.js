@@ -9,7 +9,6 @@ import reviewService from "../service/review.service.js"
         - vista ranking personal
         - vista equipments comentats
         - vista detall equipament (falta mapa, i posar puntuacio mitja)
-        - vista home, posar boto per crear equipment
 */
 
 const home = async (req, res, next) => {
@@ -118,12 +117,9 @@ const showEquipment = async (req, res, next) => {
         const equipment = await equipmentService.getEquipmentById(uuid)
         if (!equipment) throw new Error("Equipament no trobat")
 
-        const reviews = await reviewService.getReviewsByEquipment(uuid)
-
         res.render('equipment/detail', {
             title: `Detall: ${equipment.nom}`,
             equipment: equipment,
-            reviews: reviews,
             user: req.user
         })
     } catch (err) {
