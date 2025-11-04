@@ -19,6 +19,26 @@ mixin equipmentCard(equipment)
           span.text-primary.fw-bold Veure Detalls 
             i.bi.bi-arrow-right-short
 
+mixin rankingCard(entry)
+  - const detailUrl = entry.url || (entry.equipmentUuid ? `/equipment/${entry.equipmentUuid}` : '#')
+  .col
+    .card.h-100.shadow-sm.ranking-card.border-0
+      a.card-body.text-decoration-none.d-flex.flex-column.gap-3.h-100.text-dark(href=detailUrl)
+        .d-flex.align-items-center.justify-content-between
+          .d-flex.align-items-center.gap-3
+            span.badge.bg-primary.rounded-pill.px-3.py-2.fs-6 #{entry.position}
+            .d-flex.flex-column
+              h5.card-title.text-dark.fw-bold.mb-1= entry.name
+          span.badge.bg-secondary #{entry.reviewsCount} ressenya(s)
+        if entry.avgRating !== null
+          .mt-auto.text-end
+            +starRating(entry.avgRating)
+            if entry.avgRatingDisplay
+              small.text-muted.d-block.mt-2 #{entry.avgRatingDisplay} / 5
+        else
+          .mt-auto
+            small.text-muted Sense puntuacions disponibles
+
 mixin starRating(rating)
   //- Assegurem que el rating és un número
   - const numRating = parseFloat(rating) || 0

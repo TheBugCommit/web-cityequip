@@ -134,13 +134,44 @@ const showEquipmentsMap = (req, res) => { //TODO: render view
     res.json({ content: 'Render global map view' })
 }
 
-const showGlobalRanking = async (req, res, next) => { //TODO: render view
+const showGlobalRanking = async (req, res, next) => {
     try {
-        const items = await reviewService.getGlobalRanking(3)
+        const parsedLimit = Number.parseInt(req.query.limit ?? '', 10)
+        const limit = Number.isFinite(parsedLimit) && parsedLimit > 0 ? parsedLimit : 10
+
+        const ranking = await reviewService.getGlobalRanking(limit)
+
+        const equipments = await Promise.all(ranking.map(async (entry, index) => {
+            const equipmentUuid = entry.equipmentUuid ?? entry.uuid ?? entry._id ?? entry.id ?? null
+            let equipment = null
+
+            if (equipmentUuid) {
+                try {
+                    equipment = await equipmentService.getEquipmentById(equipmentUuid)
+                } catch (err) {
+                    equipment = null
+                }
+            }
+
+            const avgRating = Number.isFinite(entry.avgRating) ? Number(entry.avgRating) : null
+            const avgRatingDisplay = avgRating !== null ? avgRating.toFixed(2) : null
+            const equipmentName = equipment?.nom ?? equipment?.name ?? equipment?.title ?? null
+
+            return {
+                position: index + 1,
+                uuid: equipment?.uuid ?? equipmentUuid ?? null,
+                equipmentUuid: equipment?.uuid ?? equipmentUuid ?? null,
+                name: equipmentName ?? 'Equipament desconegut',
+                avgRating,
+                avgRatingDisplay,
+                reviewsCount: entry.reviewsCount ?? entry.totalReviews ?? entry.count ?? 0,
+                url: equipmentUuid ? `/equipment/${equipment?.uuid ?? equipmentUuid}` : null
+            }
+        }))
 
         res.render('global', {
             title: 'Ranking Global',
-            equipments: items,
+            equipments,
             user: req.user
         })
     } catch (err) {
