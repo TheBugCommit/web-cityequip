@@ -14,6 +14,20 @@ const mergeEquipmentsWithAvgRating = (equipments, avgRatings) => {
     }))
 }
 
+const mergeEquipmentsWithRanking = (equipments, ranking) => {
+  const rankingIndex = ranking.reduce((acc, item) => {
+    acc[item._id] = item
+    return acc
+  }, {})
+
+  return equipments
+    .filter(eq => rankingIndex[eq.uuid])
+    .map(eq => ({
+      ...eq,
+      ...rankingIndex[eq.uuid]
+    }))
+}
+
 const getAll = async () => {
     const [equipaments, avgRatings] = await Promise.all([
         apiService.get("/equipments"),
@@ -44,8 +58,36 @@ const getEquipmentById = async (uuid) => {
     const equipment = equipament.data
     equipment.reviews = reviews
     equipment.avgRating = avgRating
-    
+
     return equipment
+}
+
+const getGlobalBestEquipments = async (limit) => {
+    const [equipaments, bestReviewedEquipments] = await Promise.all([
+        apiService.get("/equipments"),
+        reviewService.getGlobalRanking(limit)
+    ])
+
+    const equipments = equipaments.data
+
+    const topEquipments = mergeEquipmentsWithRanking(equipments, bestReviewedEquipments)
+    topEquipments.sort((a, b) => (b.avgRating || 0) - (a.avgRating || 0));
+
+    return topEquipments
+}
+
+const getGlobalBestEquipmentsByUser = async (userId, limit) => {
+    const [equipaments, bestReviewedEquipments] = await Promise.all([
+        apiService.get("/equipments"),
+        reviewService.getGlobalRanking(limit)
+    ])
+
+    const equipments = equipaments.data
+
+    const topEquipments = mergeEquipmentsWithRanking(equipments, bestReviewedEquipments)
+    topEquipments.sort((a, b) => (b.avgRating || 0) - (a.avgRating || 0));
+
+    return topEquipments
 }
 
 const createEquipment = async (data) => {
@@ -76,7 +118,9 @@ const equipmentService = {
     createEquipment,
     updateEquipment,
     deleteEquipment,
-    getEquipmentsByType
+    getEquipmentsByType,
+    getGlobalBestEquipments,
+    getGlobalBestEquipmentsByUser
 }
 
 export default equipmentService

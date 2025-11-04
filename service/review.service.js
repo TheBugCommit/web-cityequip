@@ -70,7 +70,7 @@ const getGlobalRanking = async (limit = 3) => {
                     reviewsCount: { $sum: 1 }
                 }
             },
-            { $sort: { avgRating: -1, reviewsCount: -1 } },
+            { $sort: { avgRating: -1 } },
             { $limit: limit }
         ])
     } catch (err) {

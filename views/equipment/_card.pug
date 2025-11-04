@@ -11,14 +11,14 @@ mixin equipmentCard(equipment)
           span.badge.bg-secondary.fw-normal= equipment.tipus
         
         p.card-text.text-muted.mb-1
-          i.bi.bi-geo-alt-fill.me-2
+          i.fa-solid.fa-map-location
           | #{equipment.localitzacio}
         p.card-text.text-muted
-          i.bi.bi-pin-map.me-2
+          i.fa-solid.fa-map-pin
           | Districte: #{equipment.districte}
 
         +starRating(0, equipment.avgRating || 0, false)
         
         .mt-auto.text-end
           span.text-primary.fw-bold Veure Detalls 
-            i.bi.bi-arrow-right-short
+            i.fa-solid.fa-arrow-right

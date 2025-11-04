@@ -15,7 +15,6 @@ const home = async (req, res, next) => {
         res.render('index', {
             title: 'Equipaments',
             equipments: allEquipments,
-            user: req.user,
         })
     } catch (err) {
         next(err)
@@ -31,7 +30,6 @@ const showEquipmentsByType = async (req, res, next) => {
             title: 'Equipaments',
             equipments: equipments,
             currentType: type,
-            user: req.user,
         })
     } catch (err) {
         next(err)
@@ -82,7 +80,6 @@ const equipmentCreateForm = (req, res) => {
         actionUrl: `/equipment/create`,
         submitText: 'Crear equipament',
         cancelUrl: `/`,
-        user: req.user
     })
 }
 
@@ -99,7 +96,6 @@ const equipmentUpdateForm = async (req, res, next) => {
             actionUrl: `/equipment/update/${equipment.uuid}`,
             submitText: 'Actualitzar equipament',
             cancelUrl: `/equipment/${equipment.uuid}`,
-            user: req.user
         })
     } catch (err) {
         next(err)
@@ -117,56 +113,19 @@ const showEquipment = async (req, res, next) => {
         res.render('equipment/detail', {
             title: `Detall: ${equipment.nom}`,
             equipment: equipment,
-            user: req.user
         })
     } catch (err) {
         next(err)
     }
 }
 
-const showEquipmentsMap = (req, res) => { //TODO: render view
-    res.json({ content: 'Render global map view' })
-}
-
 const showGlobalRanking = async (req, res, next) => {
     try {
-        const parsedLimit = Number.parseInt(req.query.limit ?? '', 10)
-        const limit = Number.isFinite(parsedLimit) && parsedLimit > 0 ? parsedLimit : 10
+        const topEquipments = await equipmentService.getGlobalBestEquipments(3)
 
-        const ranking = await reviewService.getGlobalRanking(limit)
-
-        const equipments = await Promise.all(ranking.map(async (entry, index) => {
-            const equipmentUuid = entry.equipmentUuid ?? entry.uuid ?? entry._id ?? entry.id ?? null
-            let equipment = null
-
-            if (equipmentUuid) {
-                try {
-                    equipment = await equipmentService.getEquipmentById(equipmentUuid)
-                } catch (err) {
-                    equipment = null
-                }
-            }
-
-            const avgRating = Number.isFinite(entry.avgRating) ? Number(entry.avgRating) : null
-            const avgRatingDisplay = avgRating !== null ? avgRating.toFixed(2) : null
-            const equipmentName = equipment?.nom ?? equipment?.name ?? equipment?.title ?? null
-
-            return {
-                position: index + 1,
-                uuid: equipment?.uuid ?? equipmentUuid ?? null,
-                equipmentUuid: equipment?.uuid ?? equipmentUuid ?? null,
-                name: equipmentName ?? 'Equipament desconegut',
-                avgRating,
-                avgRatingDisplay,
-                reviewsCount: entry.reviewsCount ?? entry.totalReviews ?? entry.count ?? 0,
-                url: equipmentUuid ? `/equipment/${equipment?.uuid ?? equipmentUuid}` : null
-            }
-        }))
-
-        res.render('global', {
+        res.render('globalRanking', {
             title: 'Ranking Global',
-            equipments,
-            user: req.user
+            topEquipments: topEquipments,
         })
     } catch (err) {
         next(err)
@@ -216,7 +175,6 @@ const equipmentController = {
     equipmentCreateForm,
     equipmentUpdateForm,
     showEquipment,
-    showEquipmentsMap,
     showGlobalRanking,
     createReview,
     updateReview

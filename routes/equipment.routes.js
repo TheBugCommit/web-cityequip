@@ -36,8 +36,6 @@ router.get('/delete/:uuid',
     equipmentController.deleteEquipment
 )
 
-router.get('/map', equipmentController.showEquipmentsMap)
-
 router.get('/ranking/global', equipmentController.showGlobalRanking)
 
 router.post('/:uuid/review/create', 

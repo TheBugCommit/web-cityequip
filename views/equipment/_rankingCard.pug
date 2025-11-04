@@ -1,0 +1,32 @@
+include ../mixins/_starRating
+
+mixin rankingCard(equipment, position)
+  .col-12
+    .card.h-100.shadow-sm.border-0
+      a.card-body.ranking-card.text-decoration-none.d-flex.flex-column.gap-2.h-100.text-dark(href=`/equipment/${equipment.uuid}`)
+        .d-flex.align-items-center.justify-content-between.mb-2
+          span.badge.bg-primary.rounded-pill.px-3.py-2.fs-6 #{position}
+          if equipment.reviewsCount != null
+            span.badge.bg-secondary.rounded-pill.px-2.py-1 #{equipment.reviewsCount} ressenya(s)
+
+        h5.card-title.text-dark.fw-bold.mb-1 #{equipment.nom}
+        if equipment.tipus
+          h6.card-subtitle.mb-2
+            span.badge.bg-secondary.fw-normal= equipment.tipus
+
+        if equipment.localitzacio
+          p.card-text.text-muted.mb-1
+            i.fa-solid.fa-map-location
+            | #{equipment.localitzacio}
+            
+        if equipment.districte
+          p.card-text.text-muted.mb-1
+            i.fa-solid.fa-map-pin
+            | Districte: #{equipment.districte}
+
+
+        +starRating(equipment.rating || 0, equipment.avgRating || 0, false)
+
+        .mt-auto.text-end
+          span.text-primary.fw-bold Veure Detalls 
+            i.fa-solid.fa-arrow-right
