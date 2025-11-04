@@ -9,31 +9,52 @@ L.Icon.Default.mergeOptions({
     shadowUrl: markerShadowUrl,
 })
 
-export default function initMap(mapId = 'equipment-map', equipments = [], defaultLat = 41.12, defaultLng = 1.25, defaultZoom = 13) {
-    const mapContainer = document.getElementById(mapId)
-    if (!mapContainer) return
+const initMap = ({
+    mapId,
+    equipments = [],
+    defaultLat = 41.117,
+    defaultLng = 1.244,
+    defaultZoom = 13,
+    tabId = null
+}) => {
+    let map
 
-    if (!mapContainer._leaflet_id) {
-        const map = L.map(mapId).setView([defaultLat, defaultLng], defaultZoom)
+    const setupMap = () => {
+        if (map) return
+        map = L.map(mapId)
+
+        const markers = equipments
+            .filter(eq => eq.latitud && eq.longitud)
+            .map(eq => L.marker([eq.latitud, eq.longitud])
+                .bindPopup(`<b>${eq.nom}</b><br>${eq.localitzacio || ''}`))
+
+        markers.forEach(marker => marker.addTo(map))
+
+        if (markers.length === 0) {
+            map.setView([defaultLat, defaultLng], defaultZoom)
+        } else if (markers.length === 1) {
+            map.setView(markers[0].getLatLng(), 13)
+        } else {
+            const group = L.featureGroup(markers)
+            map.fitBounds(group.getBounds().pad(0.1), { maxZoom: 14 })
+        }
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 18,
-            attribution: '&copy OpenStreetMap contributors'
+            attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map)
-
-        equipments.forEach(eq => {
-            if (eq.latitud && eq.longitud) {
-                L.marker([eq.latitud, eq.longitud])
-                    .addTo(map)
-                    .bindPopup(`<b>${eq.nom}</b><br>${eq.localitzacio || ''}`)
-            }
-        })
-
-        const mapTab = document.querySelector('#map-tab')
-        if (mapTab) {
-            mapTab.addEventListener('shown.bs.tab', () => {
-                map.invalidateSize()
-            })
-        }
     }
+
+    const tabEl = document.getElementById(tabId || '')
+    if (tabEl) {
+        tabEl.addEventListener('shown.bs.tab', () => {
+            setupMap()
+            map.invalidateSize()
+        })
+    } else {
+        setupMap()
+    }
+
+    return map
 }
+
+export default initMap

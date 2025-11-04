@@ -12,6 +12,10 @@ function main() {
     confirmation()
     starRating()
     if (window.equipments) {
-        initMap('equipment-map', window.equipments)
+        initMap({
+            mapId: 'equipment-map',
+            equipments: window.equipments,
+            tabId: 'map-tab'
+        })
     }
 }
