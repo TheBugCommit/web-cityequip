@@ -1,0 +1,26 @@
+mixin starRating(rating = 0, avgRating = 0, interactive = false)
+  if interactive
+    label.form-label(for="rating") Puntuació
+      .star-rating
+        each i in [1, 2, 3, 4, 5]
+          i.fa-star.fa-regular.star(data-value=i)
+        input(type="hidden" name="rating" value=rating)
+  else
+    - const fullStars = Math.floor(avgRating)
+    - const remainder = avgRating - fullStars
+    - const partialPercent = Math.round(remainder * 100)
+    - const emptyStars = 5 - fullStars - (partialPercent > 0 ? 1 : 0)
+
+    .star-rating.readonly
+      each i in [...Array(fullStars).keys()]
+        i.fa-solid.fa-star.filled
+
+      if partialPercent > 0
+        i.fa-regular.fa-star
+          i.fa-solid.fa-star.star-partial(class=`star-partial-${partialPercent}`)
+
+      each i in [...Array(emptyStars).keys()]
+        i.fa-regular.fa-star
+
+    if avgRating
+      span.ms-2.text-muted #{avgRating.toFixed(1)}

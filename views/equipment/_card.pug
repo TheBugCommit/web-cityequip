@@ -1,0 +1,24 @@
+include ../mixins/_starRating
+
+mixin equipmentCard(equipment)
+  .col
+    .card.h-100.shadow-sm.equipment-card.border-0
+      a.card-body.text-decoration-none.d-flex.flex-column(href=`/equipment/${equipment.uuid}`)
+        h5.card-title.text-dark.fw-bold
+          | #{equipment.nom}
+        
+        h6.card-subtitle.mb-2
+          span.badge.bg-secondary.fw-normal= equipment.tipus
+        
+        p.card-text.text-muted.mb-1
+          i.bi.bi-geo-alt-fill.me-2
+          | #{equipment.localitzacio}
+        p.card-text.text-muted
+          i.bi.bi-pin-map.me-2
+          | Districte: #{equipment.districte}
+
+        +starRating(0, equipment.avgRating || 0, false)
+        
+        .mt-auto.text-end
+          span.text-primary.fw-bold Veure Detalls 
+            i.bi.bi-arrow-right-short

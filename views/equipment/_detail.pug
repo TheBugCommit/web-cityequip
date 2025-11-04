@@ -1,0 +1,41 @@
+mixin equipmentDetail(equipment)
+  .card.shadow-sm.border-0
+    .card-body.p-4.p-md-5
+      .row.g-4
+        .col-lg-7
+          h1.display-6.fw-bold.mb-3
+            | #{equipment.nom}
+          
+          ul.list-unstyled.fs-5
+            li.mb-2
+              span.badge.bg-primary.fs-6= equipment.tipus
+            li.mb-2
+              strong.d-inline-block.me-2(style="min-width: 100px;") Adreça: 
+              | #{equipment.localitzacio}
+            li.mb-2
+              strong.d-inline-block.me-2(style="min-width: 100px;") Districte:
+              | #{equipment.districte}
+            if equipment.horari
+              li.mb-2
+                strong.d-inline-block.me-2(style="min-width: 100px;") Horari:
+                | #{equipment.horari}
+            if equipment.telefon
+              li.mb-2
+                strong.d-inline-block.me-2(style="min-width: 100px;") Telèfon:
+                a(href=`tel:${equipment.telefon}`)= equipment.telefon
+            li.mb-2
+              strong.d-inline-block.me-2(style="min-width: 100px;") Entitat:
+              | #{equipment.nom_ens}
+            li.mb-2
+              strong.d-inline-block.me-2(style="min-width: 100px;") Municipal:
+              if equipment.municipal
+                span.badge.bg-success Sí
+              else
+                span.badge.bg-danger No
+
+        .col-lg-5
+          h4.text-muted.mb-3 Localització
+          #map.bg-secondary.bg-opacity-10.rounded.border(style="height: 300px; display: flex; align-items: center; justify-content: center; color: #6c757d;")
+            .text-center
+              i.bi.bi-map.fs-1
+              p (Aquí aniria el mapa)
