@@ -1,0 +1,26 @@
+[
+    {
+        "email": "alice@example.com",
+        "name": "Alice Johnson",
+        "role": "user",
+        "password": "password123"
+    },
+    {
+        "email": "bob.smith@example.com",
+        "name": "Bob Smith",
+        "role": "admin",
+        "password": "adminPass987"
+    },
+    {
+        "email": "carla.mendez@example.com",
+        "name": "Carla Mendez",
+        "role": "user",
+        "password": "carlaPwd!2025"
+    },
+    {
+        "email": "david.lee@example.com",
+        "name": "David Lee",
+        "role": "user",
+        "password": "dleePass77"
+    }
+]

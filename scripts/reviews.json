@@ -1,0 +1,106 @@
+[
+  {
+    "rating": 5,
+    "comment": "Increíble equipo, superó mis expectativas."
+  },
+  {
+    "rating": 4,
+    "comment": "Buen rendimiento, cumple con lo esperado."
+  },
+  {
+    "rating": 2,
+    "comment": "No funcionó como esperaba, algunos problemas."
+  },
+  {
+    "rating": 3,
+    "comment": "Regular, necesita algunas mejoras."
+  },
+  {
+    "rating": 5,
+    "comment": "Muy útil, definitivamente lo recomiendo."
+  },
+  {
+    "rating": 1,
+    "comment": "Mala experiencia, se dañó rápido."
+  },
+  {
+    "rating": 4,
+    "comment": "Buen equipo, aunque podría ser más rápido."
+  },
+  {
+    "rating": 3,
+    "comment": "Aceptable, pero esperaba mejor calidad."
+  },
+  {
+    "rating": 2,
+    "comment": "Problemas frecuentes durante su uso."
+  },
+  {
+    "rating": 5,
+    "comment": "Excelente, muy contento con la compra."
+  },
+  {
+    "rating": 4,
+    "comment": "Funciona bien, cumple su función."
+  },
+  {
+    "rating": 1,
+    "comment": "Defectuoso, no lo recomiendo."
+  },
+  {
+    "rating": 3,
+    "comment": "Regular, puede mejorar la durabilidad."
+  },
+  {
+    "rating": 2,
+    "comment": "No estoy satisfecho con el rendimiento."
+  },
+  {
+    "rating": 5,
+    "comment": "Perfecto, justo lo que necesitaba."
+  },
+  {
+    "rating": 4,
+    "comment": "Buen equipo, materiales de calidad."
+  },
+  {
+    "rating": 3,
+    "comment": "Ni mal ni bien, aceptable."
+  },
+  {
+    "rating": 2,
+    "comment": "Se esperaba más por el precio."
+  },
+  {
+    "rating": 5,
+    "comment": "Excelente, superó mis expectativas."
+  },
+  {
+    "rating": 4,
+    "comment": "Satisfactorio, funciona correctamente."
+  },
+  {
+    "rating": 3,
+    "comment": "Normal, cumple su función mínima."
+  },
+  {
+    "rating": 1,
+    "comment": "Muy malo, no lo volvería a comprar."
+  },
+  {
+    "rating": 5,
+    "comment": "Perfecto para mis necesidades."
+  },
+  {
+    "rating": 4,
+    "comment": "Buen rendimiento, nada que objetar."
+  },
+  {
+    "rating": 2,
+    "comment": "Problemas frecuentes, requiere mantenimiento."
+  },
+  {
+    "rating": 3,
+    "comment": "Regular, podría ser más eficiente."
+  }
+]

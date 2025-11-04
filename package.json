@@ -18,6 +18,7 @@
     "start": "node ./server.js",
     "watch": "nodemon ./server.js --ignore public/",
     "webpack": "webpack -w --mode production",
+    "load-data": "node ./scripts/load-data.js",
     "dev": "concurrently \"npm run watch\" \"npm run webpack\""
   },
   "dependencies": {
