@@ -54,9 +54,7 @@ const deleteReviewsByEquipment = async (equipmentUuid, session) => {
 
 const getUserReviews = async (userId) => {
     try {
-        return await Review.find({ user: userId })
-            .select('equipmentUuid rating comment updatedAt')
-            .sort('-updatedAt')
+        return await Review.find({ user: userId }).sort('-updatedAt')
     } catch (err) {
         throw handleMongooseError(err, 'Error getting user reviews')
     }
@@ -83,7 +81,6 @@ const getGlobalRanking = async (limit = 3) => {
 const getPersonalRanking = async (userId, limit = 3) => {
     try {
         return await Review.find({ user: userId })
-            .select('equipmentUuid rating comment updatedAt')
             .sort({ rating: -1, updatedAt: -1 })
             .limit(limit)
     } catch (err) {
@@ -114,7 +111,7 @@ const getAvgRatingForEquipment = async (equipmentUuid) => {
 const getAvgRatingForAllEquipments = async () => {
     try {
         const result = await Review.aggregate([
-            { 
+            {
                 $group: {
                     _id: "$equipmentUuid",
                     avgRating: { $avg: "$rating" }
@@ -130,9 +127,7 @@ const getAvgRatingForAllEquipments = async () => {
 
 const getReviewsByEquipment = async (equipmentUuid) => {
     try {
-        return await Review.find({ "equipmentUuid": equipmentUuid })
-            .populate('user', 'uuid name')
-            .sort({ createdAt: -1 })
+        return await Review.find({ "equipmentUuid": equipmentUuid }).sort({ createdAt: -1 })
     } catch (err) {
         throw handleMongooseError(err, 'Error getting reviews by equipment')
     }

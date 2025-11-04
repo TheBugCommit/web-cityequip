@@ -34,5 +34,13 @@ const reviewSchema = new mongoose.Schema({
 
 reviewSchema.index({ equipmentUuid: 1, user: 1 }, { unique: true })
 
+function autoPopulateUser(next) {
+  this.populate('user')
+  next()
+}
+
+reviewSchema.pre('find', autoPopulateUser)
+reviewSchema.pre('findOne', autoPopulateUser)
+
 const Review = mongoose.model('Review', reviewSchema)
 export default Review

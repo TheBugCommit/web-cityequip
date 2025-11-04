@@ -30,8 +30,12 @@ block content
             textarea.form-control(id="comment" name="comment" rows="3" placeholder="Escriu la teva opinió...")
 
           button.btn.btn-primary(type="submit") Envia Ressenya
+  else
+    .alert.alert-secondary.my-4
+      a(href="/auth/login") Inicia sessió
+      |  per deixar una ressenya.
 
-    .list-group.shadow-sm
+  .list-group.shadow-sm
       .list-group-item.py-3
         if Array.isArray(equipment.reviews) && equipment.reviews.length > 0
           each review in equipment.reviews
@@ -40,14 +44,10 @@ block content
               review.comment, 
               review.rating,
               review.updatedAt,
-              user._id.toString() === review.user._id.toString(),
+              user && user._id.toString() === review.user._id.toString(),
               equipment.uuid,
               review.uuid
             )
         else
           .list-group-item
             p.text-muted No hi ha ressenyes.
-  else
-    .alert.alert-secondary.my-4
-      a(href="/auth/login") Inicia sessió
-      |  per deixar una ressenya.
