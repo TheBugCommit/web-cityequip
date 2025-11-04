@@ -1,3 +1,4 @@
+import equipmentService from "../service/equipment.service.js"
 import reviewService from "../service/review.service.js"
 
 const showEquipmentsReviewed = async (req, res, next) => { //TODO: render view
@@ -13,13 +14,13 @@ const showEquipmentsReviewed = async (req, res, next) => { //TODO: render view
     }
 }
 
-const showReviewsRanking = async (req, res, next) => { //TODO: render view
+const showReviewsRanking = async (req, res, next) => {
     try {
-        const reviews = await reviewService.getPersonalRanking(req.user._id)
-        res.render('user', {
+        const topEquipments = await equipmentService.getGlobalBestEquipmentsByUser(req.user._id, 3)
+
+        res.render('user/ranking', {
             title: 'Ranking Personal',
-            equipments: reviews,
-            user: req.user
+            topEquipments: topEquipments,
         })
     } catch (err) {
         next(err)

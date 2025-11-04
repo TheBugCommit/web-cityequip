@@ -79,13 +79,13 @@ const getGlobalBestEquipments = async (limit) => {
 const getGlobalBestEquipmentsByUser = async (userId, limit) => {
     const [equipaments, bestReviewedEquipments] = await Promise.all([
         apiService.get("/equipments"),
-        reviewService.getGlobalRanking(limit)
+        reviewService.getPersonalRanking(userId, limit)
     ])
 
     const equipments = equipaments.data
 
     const topEquipments = mergeEquipmentsWithRanking(equipments, bestReviewedEquipments)
-    topEquipments.sort((a, b) => (b.avgRating || 0) - (a.avgRating || 0));
+    topEquipments.sort((a, b) => (b.rating || 0) - (a.rating || 0));
 
     return topEquipments
 }

@@ -1,0 +1,9 @@
+extends ../layout
+include ../equipment/_rankingCard
+
+block content
+  .container.mt-4
+    h2.mb-4 Ranking Personal d'Equipaments
+    .row.flex-column.g-3
+      each equipment, index in topEquipments
+        +rankingCard(equipment, index + 1)

@@ -25,7 +25,7 @@ mixin rankingCard(equipment, position)
             | Districte: #{equipment.districte}
 
 
-        +starRating(equipment.rating || 0, equipment.avgRating || 0, false)
+        +starRating(equipment.rating || null, equipment.avgRating || null, false)
 
         .mt-auto.text-end
           span.text-primary.fw-bold Veure Detalls 

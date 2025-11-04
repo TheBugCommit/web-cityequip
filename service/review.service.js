@@ -79,13 +79,25 @@ const getGlobalRanking = async (limit = 3) => {
 }
 
 const getPersonalRanking = async (userId, limit = 3) => {
-    try {
-        return await Review.find({ user: userId })
-            .sort({ rating: -1, updatedAt: -1 })
-            .limit(limit)
-    } catch (err) {
-        throw handleMongooseError(err, 'Error getting personal ranking')
-    }
+  try {
+    const ranking = await Review.aggregate([
+      { $match: { user: userId } },           
+      { $sort: { rating: -1} }, 
+      { $limit: limit },                       
+      { 
+        $project: {                            
+          _id: "$equipmentUuid",               
+          rating: 1,
+          comment: 1,
+          updatedAt: 1
+        }
+      }
+    ])
+
+    return ranking
+  } catch (err) {
+    throw handleMongooseError(err, 'Error getting personal ranking')
+  }
 }
 
 const getAvgRatingForEquipment = async (equipmentUuid) => {

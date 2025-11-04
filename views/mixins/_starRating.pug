@@ -6,7 +6,7 @@ mixin starRating(rating = 0, avgRating = 0, interactive = false)
           i.fa-star.fa-regular.star(data-value=i)
         input(type="hidden" name="rating" value=rating)
   else
-    - const fullStars = Math.floor(avgRating)
+    - const fullStars = Math.floor(avgRating || rating)
     - const remainder = avgRating - fullStars
     - const partialPercent = Math.round(remainder * 100)
     - const emptyStars = 5 - fullStars - (partialPercent > 0 ? 1 : 0)
