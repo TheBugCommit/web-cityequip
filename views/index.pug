@@ -3,31 +3,63 @@ include equipment/_card
 
 block content
   .d-flex.justify-content-between.align-items-center.mb-3
-      h1.mb-0 Equipaments
-      .d-flex.gap-2.align-items-center
-        if user && user.role.toLowerCase() == 'admin'
-          a.btn.btn-outline-warning(href='/equipment/create')
-            i.fa-solid.fa-plus.me-1
-            | Crear Equipment 
-        .dropdown
-          button.btn.btn-outline-primary.dropdown-toggle(type="button" data-bs-toggle="dropdown" aria-expanded="false")
-            i.fa-solid.fa-filter.me-1
-            | #{currentType ? currentType : 'Filtra per tipus'}
-          ul.dropdown-menu.dropdown-menu-end
-            li
-              a.dropdown-item(href="/") Tots
-            if unicTypes 
-              each type in unicTypes 
-                li
-                  a.dropdown-item(
-                    href=`/filter/${type}`
-                    class=(selectedType === type ? 'active' : '')
-                  )= type
+    h1.mb-0 Equipaments
+    .d-flex.gap-2.align-items-center
+      if user && user.role.toLowerCase() == 'admin'
+        a.btn.btn-outline-warning(href='/equipment/create')
+          i.fa-solid.fa-plus.me-1
+          | Crear Equipment 
+      .dropdown
+        button.btn.btn-outline-primary.dropdown-toggle(type="button" data-bs-toggle="dropdown" aria-expanded="false")
+          i.fa-solid.fa-filter.me-1
+          | #{currentType ? currentType : 'Filtra per tipus'}
+        ul.dropdown-menu.dropdown-menu-end
+          li
+            a.dropdown-item(href="/") Tots
+          if unicTypes 
+            each type in unicTypes 
+              li
+                a.dropdown-item(
+                  href=`/filter/${type}`
+                  class=(selectedType === type ? 'active' : '')
+                )= type
 
-  .row.row-cols-1.row-cols-md-2.row-cols-lg-3.g-4
-    if equipments && equipments.length > 0
-      each equipment in equipments
-        +equipmentCard(equipment)
-    else
-      .col-12
-        .alert.alert-info No s'han trobat equipaments.
+  ul.nav.nav-tabs.mt-3#equipmentTabs(role="tablist")
+    li.nav-item
+      button.nav-link.active(
+        id="list-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#list-view"
+        type="button"
+        role="tab"
+        aria-controls="list-view"
+        aria-selected="true"
+      )
+        i.fa-solid.fa-list.me-1
+        | Llista
+    li.nav-item
+      button.nav-link(
+        id="map-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#map-view"
+        type="button"
+        role="tab"
+        aria-controls="map-view"
+        aria-selected="false"
+      )
+        i.fa-solid.fa-map.me-1
+        | Mapa
+
+  .tab-content.mt-3
+    .tab-pane.fade.show.active#list-view(role="tabpanel" aria-labelledby="list-tab")
+      .row.row-cols-1.row-cols-md-2.row-cols-lg-3.g-4
+        if equipments && equipments.length > 0
+          each equipment in equipments
+            +equipmentCard(equipment)
+        else
+          .col-12
+            .alert.alert-info No s'han trobat equipaments.
+
+    .tab-pane.fade#map-view(role="tabpanel" aria-labelledby="map-tab")
+      #equipment-map(class="rounded shadow-sm border vh-70")
+

@@ -16,10 +16,10 @@ html
           a.navbar-brand(href='/')
             i.bi.bi-buildings-fill.me-2
             | Equipaments
-          
+
           button.navbar-toggler(type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation")
             span.navbar-toggler-icon
-          
+
           .collapse.navbar-collapse#navbarNav
             ul.navbar-nav.me-auto
               each item in menu
@@ -55,13 +55,21 @@ html
 
     main.container.my-4.flex-fill
       +flashNotifications(messages)
-      
+
       block content
 
     footer.bg-dark.text-white.text-center.p-3.mt-5
       p &copy; #{new Date().getFullYear()} - Equipaments
 
-
     block scripts
+      if equipment
+        - const { reviews, ...safeEquipment } = equipment
+        script.
+          window.equipments = !{JSON.stringify([safeEquipment] || [])};
+      if equipments
+        script.
+          window.equipments = !{JSON.stringify(equipments|| [])};
+
       script(src="/dist/bootstrap.bundle.min.js")
       script(src="/dist/app.bundle.js")
+

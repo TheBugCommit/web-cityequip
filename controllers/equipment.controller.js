@@ -4,11 +4,8 @@ import reviewService from "../service/review.service.js"
 
 /* TODO: 
     - render views
-        - vista de mapa global
         - vista ranking global
         - vista ranking personal
-        - vista equipments comentats
-        - vista detall equipament (falta mapa, i posar puntuacio mitja)
 */
 
 const home = async (req, res, next) => {

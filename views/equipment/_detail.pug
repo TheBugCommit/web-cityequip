@@ -35,8 +35,4 @@ mixin equipmentDetail(equipment)
               +starRating(0, equipment.avgRating || 0, false)
 
         .col-lg-5
-          h4.text-muted.mb-3 Localització
-          #map.bg-secondary.bg-opacity-10.rounded.border(style="height: 300px; display: flex; align-items: center; justify-content: center; color: #6c757d;")
-            .text-center
-              i.bi.bi-map.fs-1
-              p (Aquí aniria el mapa)
+          #equipment-map(class="rounded shadow-sm border")

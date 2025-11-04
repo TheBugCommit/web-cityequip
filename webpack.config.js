@@ -10,7 +10,22 @@ const webpackConfig = {
     output: {
         filename: 'app.bundle.js',
         path: path.resolve(__dirname, 'public', 'dist'),
-    }
+    },
+    module: {
+        rules: [
+            {
+                test: /\.css$/i,
+                use: ['style-loader', 'css-loader'],
+            },
+            {
+                test: /\.(png|svg|jpg|gif)$/i,
+                type: 'asset/resource',
+                generator: {
+                    filename: 'images/[name][ext]',
+                },
+            },
+        ],
+    },
 }
 
 export default webpackConfig
