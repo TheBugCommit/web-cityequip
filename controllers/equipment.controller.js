@@ -83,7 +83,7 @@ const deleteEquipment = async (req, res) => {
 const equipmentCreateForm = (req, res) => {
     res.render('equipment/create', {
         title: `Crear Equipment`,
-        actionUrl: `/equipment/new`,
+        actionUrl: `/equipment/create`,
         submitText: 'Crear equipament',
         cancelUrl: `/`,
         user: req.user

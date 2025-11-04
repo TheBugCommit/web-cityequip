@@ -5,12 +5,11 @@ import ROLES from "../config/roles.config.js"
 
 const router = Router()
 
-// CRUD
-router.get('/new', 
+router.get('/create', 
     middlewares.auth.hasRole(ROLES.ADMIN), 
     equipmentController.equipmentCreateForm
 )
-router.post('/new', 
+router.post('/create', 
     middlewares.auth.hasRole(ROLES.ADMIN),
     middlewares.reqValidators.equipmentValidator,
     middlewares.validationErrorHandler,
