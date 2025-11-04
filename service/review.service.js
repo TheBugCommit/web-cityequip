@@ -54,86 +54,75 @@ const deleteReviewsByEquipment = async (equipmentUuid, session) => {
 
 const getUserReviews = async (userId) => {
     try {
-        return await Review.find({ user: userId }).sort('-updatedAt')
+        const reviews = await Review.find({ user: userId })
+        return reviews
     } catch (err) {
         throw handleMongooseError(err, 'Error getting user reviews')
     }
 }
 
-const getGlobalRanking = async (limit = 3) => {
+const getPersonalRanking = async (userId, limit = 3) => {
     try {
-        return await Review.aggregate([
-            {
-                $group: {
-                    _id: '$equipmentUuid',
-                    avgRating: { $avg: '$rating' },
-                    reviewsCount: { $sum: 1 }
-                }
-            },
-            { $sort: { avgRating: -1 } },
-            { $limit: limit }
-        ])
+        const ranking = await Review
+            .find({ user: userId })
+            .sort({ rating: -1 })
+            .limit(limit)
+
+        return ranking
     } catch (err) {
-        throw handleMongooseError(err, 'Error getting global ranking')
+        throw handleMongooseError(err, 'Error getting personal ranking')
     }
 }
 
-const getPersonalRanking = async (userId, limit = 3) => {
-  try {
-    const ranking = await Review.aggregate([
-      { $match: { user: userId } },           
-      { $sort: { rating: -1} }, 
-      { $limit: limit },                       
-      { 
-        $project: {                            
-          _id: "$equipmentUuid",               
-          rating: 1,
-          comment: 1,
-          updatedAt: 1
-        }
-      }
-    ])
-
-    return ranking
-  } catch (err) {
-    throw handleMongooseError(err, 'Error getting personal ranking')
-  }
-}
-
-const getAvgRatingForEquipment = async (equipmentUuid) => {
+const getEquipmentRatingStats = async (equipmentUuid) => {
     try {
         const result = await Review.aggregate([
-            { $match: { equipmentUuid: equipmentUuid } },
+            { $match: { equipmentUuid } },
             {
                 $group: {
-                    _id: "$equipmentUuid",
-                    avgRating: { $avg: "$rating" }
+                    _id: null,
+                    avgRating: { $avg: "$rating" },
+                    reviewsCount: { $sum: 1 }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    avgRating: 1,
+                    reviewsCount: 1
                 }
             }
         ])
 
-        const avgRating = result.length > 0 ? result[0].avgRating : 0
-        return avgRating
+        return result.length > 0 ? result[0] : { avgRating: 0, reviewsCount: 0 }
     } catch (err) {
-        throw handleMongooseError(err, 'Error calculating avg rating')
+        throw handleMongooseError(err, "Error calculating avg rating")
     }
 }
 
-
-const getAvgRatingForAllEquipments = async () => {
+const getAllEquipmentRatingStats = async () => {
     try {
         const result = await Review.aggregate([
             {
                 $group: {
                     _id: "$equipmentUuid",
-                    avgRating: { $avg: "$rating" }
+                    avgRating: { $avg: "$rating" },
+                    reviewsCount: { $sum: 1 }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    equipmentUuid: "$_id",
+                    avgRating: 1,
+                    reviewsCount: 1
                 }
             }
         ])
 
         return result
     } catch (err) {
-        throw handleMongooseError(err, 'Error getting avg ratings for all equipments')
+        throw handleMongooseError(err, "Error getting avg ratings for all equipments")
     }
 }
 
@@ -149,12 +138,11 @@ const reviewService = {
     createReview,
     updateReview,
     getUserReviews,
-    getGlobalRanking,
     getPersonalRanking,
     getReviewsByEquipment,
     deleteReviewsByEquipment,
-    getAvgRatingForAllEquipments,
-    getAvgRatingForEquipment
+    getAllEquipmentRatingStats,
+    getEquipmentRatingStats
 }
 
 export default reviewService

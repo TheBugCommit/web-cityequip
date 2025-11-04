@@ -2,12 +2,6 @@ import equipmentCache from "../cache/equipment.cache.js"
 import equipmentService from "../service/equipment.service.js"
 import reviewService from "../service/review.service.js"
 
-/* TODO: 
-    - render views
-        - vista ranking global
-        - vista ranking personal
-*/
-
 const home = async (req, res, next) => {
     try {
         const allEquipments = await equipmentService.getAll()
@@ -27,7 +21,7 @@ const showEquipmentsByType = async (req, res, next) => {
         const equipments = await equipmentService.getEquipmentsByType(type)
 
         res.render('index', {
-            title: 'Equipaments',
+            title: `Equipaments`,
             equipments: equipments,
             currentType: type,
         })

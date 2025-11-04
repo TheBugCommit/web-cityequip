@@ -1,13 +1,12 @@
 import equipmentService from "../service/equipment.service.js"
-import reviewService from "../service/review.service.js"
 
-const showEquipmentsReviewed = async (req, res, next) => { //TODO: render view
+const showEquipmentsReviewed = async (req, res, next) => {
     try {
-        const reviews = await reviewService.getUserReviews(req.user._id)
-        res.render('reviews', {
-            title: 'Les meves reviews',
-            equipments: reviews,
-            user: req.user
+        const equipments = await equipmentService.getEquipmentsReviewedByUser(req.user._id)
+
+        res.render('user/reviewedEquipments', {
+            title: 'Equipaments Comentats/Puntuats',
+            equipments: equipments,
         })
     } catch (err) {
         next(err)

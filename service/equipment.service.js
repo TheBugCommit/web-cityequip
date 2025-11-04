@@ -2,92 +2,101 @@ import mongoose from "mongoose"
 import apiService from "./api.service.js"
 import reviewService from "./review.service.js"
 
-const mergeEquipmentsWithAvgRating = (equipments, avgRatings) => {
-    const avgRatingIndex = avgRatings.reduce((acc, rating) => {
-        acc[rating._id] = rating.avgRating
+const addEquipmentsRatingStats = (equipments, ratingStats) => {
+    const ratingStatsIndex = ratingStats.reduce((acc, ratingStat) => {
+        acc[ratingStat.equipmentUuid] = ratingStat
         return acc
     }, {})
 
     return equipments.map(equipment => ({
         ...equipment,
-        avgRating: avgRatingIndex[equipment.uuid] || null,
+        ...ratingStatsIndex[equipment.uuid]
     }))
 }
 
-const mergeEquipmentsWithRanking = (equipments, ranking) => {
-  const rankingIndex = ranking.reduce((acc, item) => {
-    acc[item._id] = item
-    return acc
-  }, {})
+const equipmentsFilter = (equipments, reviews) => {
+    const reviewsIndex = reviews.reduce((acc, item) => {
+        delete item.uuid
+        acc[item.equipmentUuid] = item
+        return acc
+    }, {})
 
-  return equipments
-    .filter(eq => rankingIndex[eq.uuid])
-    .map(eq => ({
-      ...eq,
-      ...rankingIndex[eq.uuid]
-    }))
+    return equipments
+        .filter(eq => reviewsIndex[eq.uuid])
 }
 
 const getAll = async () => {
-    const [equipaments, avgRatings] = await Promise.all([
+    const [equipaments, ratingStats] = await Promise.all([
         apiService.get("/equipments"),
-        reviewService.getAvgRatingForAllEquipments()
+        reviewService.getAllEquipmentRatingStats()
     ])
 
     const equipments = equipaments.data
-    return mergeEquipmentsWithAvgRating(equipments, avgRatings)
+    return addEquipmentsRatingStats(equipments, ratingStats)
 }
 
 const getEquipmentsByType = async (type) => {
-    const [equipaments, avgRatings] = await Promise.all([
+    const [equipaments, ratingStats] = await Promise.all([
         apiService.get(`/equipments?type=${type}`),
-        reviewService.getAvgRatingForAllEquipments()
+        reviewService.getAllEquipmentRatingStats()
     ])
 
     const equipments = equipaments.data
-    return mergeEquipmentsWithAvgRating(equipments, avgRatings)
+    return addEquipmentsRatingStats(equipments, ratingStats)
 }
 
 const getEquipmentById = async (uuid) => {
-    const [equipament, reviews, avgRating] = await Promise.all([
+    const [equipament, reviews, ratingStats] = await Promise.all([
         apiService.get(`/equipments/${uuid}`),
         reviewService.getReviewsByEquipment(uuid),
-        reviewService.getAvgRatingForEquipment(uuid)
+        reviewService.getEquipmentRatingStats(uuid)
     ])
 
     const equipment = equipament.data
     equipment.reviews = reviews
-    equipment.avgRating = avgRating
+    equipment.avgRating = ratingStats.avgRating
+    equipment.reviewsCount = ratingStats.reviewsCount
 
     return equipment
 }
 
 const getGlobalBestEquipments = async (limit) => {
-    const [equipaments, bestReviewedEquipments] = await Promise.all([
-        apiService.get("/equipments"),
-        reviewService.getGlobalRanking(limit)
-    ])
-
-    const equipments = equipaments.data
-
-    const topEquipments = mergeEquipmentsWithRanking(equipments, bestReviewedEquipments)
-    topEquipments.sort((a, b) => (b.avgRating || 0) - (a.avgRating || 0));
+    const equipments = await getAll()
+    const equipmentsWithAvgRating = equipments.filter(e => e.avgRating !== undefined)
+    const topEquipments = equipmentsWithAvgRating
+        .sort((a, b) => b.avgRating - a.avgRating)
+        .slice(0, limit)
 
     return topEquipments
 }
 
 const getGlobalBestEquipmentsByUser = async (userId, limit) => {
-    const [equipaments, bestReviewedEquipments] = await Promise.all([
-        apiService.get("/equipments"),
+    const [equipments, bestReviewedEquipments] = await Promise.all([
+        getAll(),
         reviewService.getPersonalRanking(userId, limit)
     ])
 
-    const equipments = equipaments.data
-
-    const topEquipments = mergeEquipmentsWithRanking(equipments, bestReviewedEquipments)
-    topEquipments.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+    const equipamentsUuids = bestReviewedEquipments.map(item => item.equipmentUuid)
+    const topEquipments = equipmentsFilter(equipments, bestReviewedEquipments)
+    
+    const positionMap = equipamentsUuids.reduce((acc, uuid, idx) => {
+        acc[uuid] = idx
+        return acc
+    }, {})
+    topEquipments.sort((a, b) => {
+        return positionMap[a.uuid] - positionMap[b.uuid]
+    })
 
     return topEquipments
+}
+
+const getEquipmentsReviewedByUser = async (userId) => {
+    const [equipments, reviewedEquipments] = await Promise.all([
+        getAll(),
+        reviewService.getUserReviews(userId),
+    ])
+
+    return equipmentsFilter(equipments, reviewedEquipments)
 }
 
 const createEquipment = async (data) => {
@@ -120,7 +129,8 @@ const equipmentService = {
     deleteEquipment,
     getEquipmentsByType,
     getGlobalBestEquipments,
-    getGlobalBestEquipmentsByUser
+    getGlobalBestEquipmentsByUser,
+    getEquipmentsReviewedByUser
 }
 
 export default equipmentService

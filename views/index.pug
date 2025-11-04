@@ -3,7 +3,7 @@ include equipment/_card
 
 block content
   .d-flex.justify-content-between.align-items-center.mb-3
-    h1.mb-0 Equipaments
+    h1.mb-0 #{title}
     .d-flex.gap-2.align-items-center
       if user && user.role.toLowerCase() == 'admin'
         a.btn.btn-outline-warning(href='/equipment/create')
