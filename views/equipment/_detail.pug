@@ -5,7 +5,9 @@ mixin equipmentDetail(equipment)
         .col-lg-7
           h1.display-6.fw-bold.mb-3
             | #{equipment.nom}
-          
+          h6.card-subtitle.mb-2
+            span.badge.bg-secondary.fw-normal= equipment.tipus
+
           ul.list-unstyled.fs-5
             li.mb-2.d-flex.align-items-center
               strong.me-2.text-nowrap Adreça:
