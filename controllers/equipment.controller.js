@@ -71,9 +71,7 @@ const deleteEquipment = async (req, res) => {
 const equipmentCreateForm = (req, res) => {
     res.render('equipment/create', {
         title: `Crear Equipment`,
-        actionUrl: `/equipment/create`,
         submitText: 'Crear equipament',
-        cancelUrl: `/`,
     })
 }
 
@@ -87,9 +85,7 @@ const equipmentUpdateForm = async (req, res, next) => {
         res.render('equipment/edit', {
             title: `Editar: ${equipment.nom}`,
             equipment: equipment,
-            actionUrl: `/equipment/update/${equipment.uuid}`,
             submitText: 'Actualitzar equipament',
-            cancelUrl: `/equipment/${equipment.uuid}`,
         })
     } catch (err) {
         next(err)

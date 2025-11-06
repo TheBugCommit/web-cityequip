@@ -1,12 +1,14 @@
 import passport from "passport"
 import userService from "../service/user.service.js"
+import routes from "../routes/index.js"
 
 const register = async (req, res, next) => {
     try {
         await userService.registerUser(req.body.name, req.body.email, req.body.password)
         next()
     } catch (err) {
-        next(err)
+        req.flash('error', err.message || 'Something happend when trying to register')
+        return res.redirectBack()
     }
 }
 
@@ -17,7 +19,7 @@ const login = (req, res, next) => {
 
         if (!user) {
             req.flash('error', info?.message || 'Failed login')
-            return res.redirectBack('/auth/login')
+            return res.redirectBack(routes.auth.paths.login)
         }
 
         req.login(user, (err) => {
@@ -25,7 +27,7 @@ const login = (req, res, next) => {
                 return next(err)
 
             req.flash('success', 'You are now logged in')
-            return res.redirect('/')
+            return res.redirect(routes.home.paths.home)
         })
     })(req, res, next)
 }
