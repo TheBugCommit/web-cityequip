@@ -15,12 +15,12 @@ block content
           | #{currentType ? currentType : 'Filtra per tipus'}
         ul.dropdown-menu.dropdown-menu-end
           li
-            a.dropdown-item(href="/") Tots
+            a.dropdown-item(href=paths.home.home) Tots
           if unicTypes 
             each type in unicTypes 
               li
                 a.dropdown-item(
-                  href=`/filter/${type}`
+                  href=paths.home.filter(type)
                   class=(selectedType === type ? 'active' : '')
                 )= type
 

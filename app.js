@@ -60,17 +60,17 @@ app.use(flash)
 app.use(middlewares.redirectBack)
 
 const prefixes = {
-    home: '/',
-    auth: '/auth',
-    equipment: '/equipment',
-    user: '/user'
+  home: '/',
+  auth: '/auth',
+  equipment: '/equipment',
+  user: '/user'
 }
 
 app.locals.paths = {
-   // home: buildPaths(prefixes.home, homePaths),
-    auth: buildPaths(prefixes.auth, routes.auth.paths),
-   // equipment: buildPaths(prefixes.equipment, equipmentPaths),
-   // user: buildPaths(prefixes.user, userPaths)
+  home: buildPaths(prefixes.home, routes.home.paths),
+  auth: buildPaths(prefixes.auth, routes.auth.paths),
+  // equipment: buildPaths(prefixes.equipment, equipmentPaths),
+  // user: buildPaths(prefixes.user, userPaths)
 }
 
 app.use(prefixes.home, routes.home.router)
@@ -79,9 +79,9 @@ app.use(prefixes.equipment, routes.equipment)
 app.use(prefixes.user, routes.user)
 
 app.use((req, res, next) => {
-    const err = new Error('Page not found')
-    err.status = 404
-    next(err)
+  const err = new Error('Page not found')
+  err.status = 404
+  next(err)
 })
 
 app.use(middlewares.errorHandler)
