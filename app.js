@@ -70,13 +70,13 @@ app.locals.paths = {
   home: buildPaths(prefixes.home, routes.home.paths),
   auth: buildPaths(prefixes.auth, routes.auth.paths),
   // equipment: buildPaths(prefixes.equipment, equipmentPaths),
-  // user: buildPaths(prefixes.user, userPaths)
+  user: buildPaths(prefixes.user, routes.user.paths)
 }
 
 app.use(prefixes.home, routes.home.router)
 app.use(prefixes.auth, routes.auth.router)
 app.use(prefixes.equipment, routes.equipment)
-app.use(prefixes.user, routes.user)
+app.use(prefixes.user, routes.user.router)
 
 app.use((req, res, next) => {
   const err = new Error('Page not found')

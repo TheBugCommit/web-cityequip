@@ -1,6 +1,6 @@
 import home, { paths as homePaths } from "./home.routes.js"
 import auth, { paths as authPaths } from "./auth.routes.js"
-import user from "./user.routes.js"
+import user, { paths as userPaths } from "./user.routes.js"
 import equipment from "./equipment.routes.js"
 
 const routes = {
@@ -12,7 +12,10 @@ const routes = {
         router: auth,
         paths: authPaths
     },
-    user: user,
+    user: {
+        router: user,
+        paths: userPaths
+    },
     equipment: equipment
 }
 

@@ -4,11 +4,16 @@ import userController from '../controllers/user.controller.js'
 
 const router = express.Router()
 
-router.get('/reviews', 
+export const paths = {
+    reviews: '/reviews',
+    reviews_ranking: '/reviews/ranking'
+}
+
+router.get(paths.reviews, 
     middlewares.auth.isAuthenticated, 
     userController.showEquipmentsReviewed
 )
-router.get('/reviews/ranking', 
+router.get(paths.reviews_ranking, 
     middlewares.auth.isAuthenticated, 
     userController.showReviewsRanking
 )

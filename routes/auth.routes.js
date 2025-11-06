@@ -8,7 +8,7 @@ export const paths = {
     login: '/login',
     register: '/register',
     logout: '/logout'
-};
+}
 
 router.get(paths.login, authController.loginForm)
 router.get(paths.register, authController.registerForm)
