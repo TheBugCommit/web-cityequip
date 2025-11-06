@@ -4,7 +4,7 @@ mixin equipmentCard(equipment)
   .col
     .card.h-100.shadow-sm.equipment-card.border-0
 
-      a.card-body.text-decoration-none.d-flex.flex-column(href=`/equipment/${equipment.uuid}`)
+      a.card-body.text-decoration-none.d-flex.flex-column(href=paths.equipment.show(equipment.uuid))
         h5.card-title.text-dark.fw-bold
           | #{equipment.nom}
         

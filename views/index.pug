@@ -6,7 +6,7 @@ block content
     h1.mb-0 #{title}
     .d-flex.gap-2.align-items-center
       if user && user.role.toLowerCase() == 'admin'
-        a.btn.btn-outline-warning(href='/equipment/create')
+        a.btn.btn-outline-warning(href=paths.equipment.create)
           i.fa-solid.fa-plus.me-1
           | Crear Equipment 
       .dropdown

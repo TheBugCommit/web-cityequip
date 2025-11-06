@@ -3,7 +3,7 @@ include ../mixins/_starRating
 mixin rankingCard(equipment, position)
   .col-12
     .card.h-100.shadow-sm.border-0
-      a.card-body.ranking-card.text-decoration-none.d-flex.flex-column.gap-2.h-100.text-dark(href=`/equipment/${equipment.uuid}`)
+      a.card-body.ranking-card.text-decoration-none.d-flex.flex-column.gap-2.h-100.text-dark(href=paths.equipment.show(equipment.uuid))
         .d-flex.align-items-center.justify-content-between.mb-2
           span.badge.bg-primary.rounded-pill.px-3.py-2.fs-6 #{position}
           if equipment.reviewsCount != null

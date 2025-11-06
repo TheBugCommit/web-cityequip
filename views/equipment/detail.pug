@@ -8,10 +8,10 @@ block content
 
   if user && user.role === 'admin'
     .mt-4
-      a.btn.btn-warning.me-2(href=`/equipment/edit/${equipment.uuid}`)
+      a.btn.btn-warning.me-2(href=paths.equipment.edit(equipment.uuid))
         i.fa-solid.fa-pencil.me-1
         | Editar
-      a.btn.btn-danger.confirmation(href=`/equipment/delete/${equipment.uuid}`)
+      a.btn.btn-danger.confirmation(href=paths.equipment.delete(equipment.uuid))
         i.fa-solid.fa-trash.me-1
         | Eliminar
 
@@ -22,7 +22,7 @@ block content
     .card.shadow-sm.my-4.border-0
       .card-body
         h5.card-title.mb-4 Deixa la teva opinió
-        form#review-form(action=`/equipment/${equipment.uuid}/review/create` method="POST")
+        form#review-form(action=paths.equipment.review_create(equipment.uuid) method="POST")
           .mb-3
             +starRating(0, 0, true)
           .mb-3

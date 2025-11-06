@@ -29,7 +29,7 @@ mixin reviewCard(name, comment, rating, date = null, isOwner = false, equipmentU
             | Editar
 
         .collapse.mt-3(id=`edit-review-${reviewUuid}`)
-          form(action=`/equipment/${equipmentUuid}/review/${reviewUuid}/update` method="POST")
+          form(action=paths.equipment.review_update(equipmentUuid, reviewUuid) method="POST")
             .mb-2
               +starRating(rating, 0, true)
             .mb-2
