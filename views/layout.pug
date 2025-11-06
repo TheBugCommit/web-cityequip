@@ -60,21 +60,12 @@ html
 
     block scripts
       if equipment
-        - const safeEquipmentData = {
-        -   longitud: equipment.longitud,
-        -   latitud: equipment.latitud,
-        -   nom: equipment.nom,
-        -   localitzacio: equipment.localitzacio
-        - }
+        - const safeEquipmentData = { longitud: equipment.longitud, latitud: equipment.latitud, nom: equipment.nom, localitzacio: equipment.localitzacio }
         script.
           window.equipments = !{JSON.stringify([safeEquipmentData] || [])};
+
       if equipments
-        - const mappedEquipments = equipments.map(e => ({
-        -   longitud: e.longitud,
-        -   latitud: e.latitud,
-        -   nom: e.nom,
-        -   localitzacio: e.localitzacio
-        - }))
+        - const mappedEquipments = equipments.map(e => ({ longitud: e.longitud, latitud: e.latitud, nom: e.nom, localitzacio: e.localitzacio }))
         script.
           window.equipments = !{JSON.stringify(mappedEquipments || [])};
 
