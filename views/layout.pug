@@ -39,15 +39,15 @@ html
                     li
                       hr.dropdown-divider
                     li
-                      a.dropdown-item(href='/auth/logout')
+                      a.dropdown-item(href=paths.auth.logout)
                         i.fa-solid.fa-door-open.me-2
                         | Tanca Sessió
               else
                 li.nav-item
-                  a.nav-link(href='/auth/register')
+                  a.nav-link(href=paths.auth.register)
                     | Registra't
                 li.nav-item
-                  a.nav-link(href='/auth/login')
+                  a.nav-link(href=paths.auth.login)
                     | Inicia Sessió
 
     main.container.my-4.flex-fill
