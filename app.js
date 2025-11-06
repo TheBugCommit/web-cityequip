@@ -4,13 +4,14 @@ import express from 'express'
 import { fileURLToPath } from 'url'
 import session from 'express-session'
 import MongoStore from 'connect-mongo'
-import router from './routes/index.js'
+import routes from './routes/index.js'
 import middlewares from './middlewares/index.js'
 import { getMenuForRole } from './config/menu.config.js'
 import { flash } from './helpers/flash.helper.js'
 import initPassport from './service/passport.service.js'
 import passport from 'passport'
 import equipmentCache from './cache/equipment.cache.js'
+import buildPaths from './helpers/buildPaths.helper.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -58,10 +59,24 @@ app.use((req, res, next) => {
 app.use(flash)
 app.use(middlewares.redirectBack)
 
-app.use('/', router.home)
-app.use('/auth', router.auth)
-app.use('/equipment', router.equipment)
-app.use('/user', router.user)
+const prefixes = {
+    home: '/',
+    auth: '/auth',
+    equipment: '/equipment',
+    user: '/user'
+}
+
+app.locals.paths = {
+   // home: buildPaths(prefixes.home, homePaths),
+    auth: buildPaths(prefixes.auth, routes.auth.paths),
+   // equipment: buildPaths(prefixes.equipment, equipmentPaths),
+   // user: buildPaths(prefixes.user, userPaths)
+}
+
+app.use(prefixes.home, routes.home.router)
+app.use(prefixes.auth, routes.auth.router)
+app.use(prefixes.equipment, routes.equipment)
+app.use(prefixes.user, routes.user)
 
 app.use((req, res, next) => {
     const err = new Error('Page not found')
